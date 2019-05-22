@@ -7,7 +7,7 @@ public class KlantLaderImpl implements KlantLader {
     private PersoonLader persoonLader;
     private MysqlLader mysqlLader;
 
-    public KlantLaderImpl(AdresLaderImpl adresLader, PersoonLader persoonLader, MysqlLader mysqlLader) {
+    public KlantLaderImpl(AdresLader adresLader, PersoonLader persoonLader, MysqlLader mysqlLader) {
         this.adresLader = adresLader;
         this.persoonLader = persoonLader;
         this.mysqlLader = mysqlLader;
