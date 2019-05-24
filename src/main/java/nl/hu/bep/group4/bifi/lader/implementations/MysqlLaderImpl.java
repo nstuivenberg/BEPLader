@@ -6,24 +6,35 @@ import java.sql.* ;
 
 
 public class MysqlLaderImpl implements MysqlLader {
+    Connection con = null;
 
-    public void connectDatabase() {
-
+    public Connection connectDatabase() {
         try {
-            System.out.println("Class forname");
             Class.forName("com.mysql.jdbc.Driver");
-            System.out.println("Trying to get connection");
-
-            Connection con = DriverManager.getConnection(
+            con = DriverManager.getConnection(
                     "jdbc:mysql://sql7.freemysqlhosting.net:3306/sql7292801", "sql7292801", "n2jfwIMeEa");
 
-            Statement stmt = con.createStatement();
 
-            ResultSet rs=stmt.executeQuery("select * from Klant");
-            while(rs.next())
-                System.out.println(rs.getInt(1)+"  "+rs.getString(2)+"  "+rs.getString(3));
-            con.close();
-        }catch(Exception e){ System.out.println(e);}
+        }catch(Exception e){
+            System.out.println(e);
+        }
+        return con;
     }
+
+    public void getAllKlanten() throws SQLException {
+
+        connectDatabase();
+        Statement stmt = con.createStatement();
+
+        ResultSet rs=stmt.executeQuery("select * from Klant");
+        while(rs.next())
+            System.out.println(rs.getInt("KlantID") +  "\t" +
+                    rs.getString("Bedrijfsnaam") + "\t" +
+                    rs.getString("Rechtsvorm"));
+        con.close();
+    }
+
+
 }
+
 
