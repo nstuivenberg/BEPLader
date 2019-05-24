@@ -12,7 +12,7 @@ public class MysqlLaderImpl implements MysqlLader {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(
-                    "jdbc:mysql://sql7.freemysqlhosting.net:3306/sql72928011", "sql7292801", "n2jfwIMeEa");
+                    "jdbc:mysql://sql7.freemysqlhosting.net:3306/sql7292801", "sql7292801", "n2jfwIMeEa");
 
         }catch(Exception e){
             System.out.println(e);
