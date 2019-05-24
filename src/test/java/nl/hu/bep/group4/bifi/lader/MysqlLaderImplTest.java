@@ -1,6 +1,5 @@
 package nl.hu.bep.group4.bifi.lader;
 
-
 import nl.hu.bep.group4.bifi.lader.implementations.MysqlLaderImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,7 +21,7 @@ public class MysqlLaderImplTest {
     @Test
     public void testConnection(){
 
-        sql.connectDatabase();
+       System.out.print( sql.connectDatabase());
     }
 
     @Test
