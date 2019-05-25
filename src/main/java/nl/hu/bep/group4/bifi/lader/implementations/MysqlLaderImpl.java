@@ -6,7 +6,7 @@ import java.sql.* ;
 
 
 public class MysqlLaderImpl implements MysqlLader {
-    Connection con = null;
+    private Connection con = null;
 
     public Connection connectDatabase() {
         try {
