@@ -6,16 +6,12 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.io.IOException;
 
-import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import nl.hu.bep.group4.bifi.lader.implementations.LegacyJarLaderImpl;
 import nl.hu.bep.group4.bifi.model.Adres;
 
-@Disabled("Want Wercker.")
-@Ignore("Want Wercker (nu echt)")
 public class LegacyJarLaderTest {
 	private LegacyJarLader lader;
 	
