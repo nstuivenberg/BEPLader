@@ -39,8 +39,30 @@ public class MysqlLaderImpl implements MysqlLader {
 
 	@Override
 	public List<Adres> getAdres(int klantId) {
-		// TODO Auto-generated method stub
-		return null;
+        connectDatabase();
+        Statement stmt = null;
+        ResultSet rs= null;
+        String query = "select * from Klant where KlantID = " + klantId;
+        //List<Adres>
+
+        try {
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        while(true) {
+            try {
+                if (!rs.next())
+                    System.out.println(rs.getInt("KlantID") +  "\t" +
+                            rs.getString("Bedrijfsnaam") + "\t" +
+                            rs.getString("Rechtsvorm"));
+                con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
 	}
 
 	@Override
