@@ -6,6 +6,7 @@ import nl.hu.bep.group4.bifi.model.Klant;
 import nl.hu.bep.group4.bifi.model.Persoon;
 
 import java.sql.* ;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -38,12 +39,12 @@ public class MysqlLaderImpl implements MysqlLader {
     }
 
 	@Override
-	public List<Adres> getAdres(int klantId) {
+	public List<Adres> getAdres(int klantId) throws SQLException {
         connectDatabase();
-        Statement stmt = null;
+        Statement stmt;
         ResultSet rs= null;
-        String query = "select * from Klant where KlantID = " + klantId;
-        //List<Adres>
+        String query = "select * from Adres where KlantID = " + klantId;
+        List<Adres> adressen = new ArrayList<>();
 
         try {
             stmt = con.createStatement();
@@ -52,18 +53,25 @@ public class MysqlLaderImpl implements MysqlLader {
             e.printStackTrace();
         }
 
-        while(true) {
+        while(rs.next()) {
             try {
-                if (!rs.next())
-                    System.out.println(rs.getInt("KlantID") +  "\t" +
-                            rs.getString("Bedrijfsnaam") + "\t" +
-                            rs.getString("Rechtsvorm"));
-                con.close();
+               String straat = rs.getString("Straat");
+               String huisnummer = rs.getString("huisnummer");
+               String postcode = rs.getString("postcode");
+               String plaats = rs.getString("plaats");
+               String BiC = rs.getString("BIC");
+//             String Type = rs.getString("Type");
+
+                Adres adres = new Adres(straat,huisnummer,postcode,plaats,BiC);
+                System.out.println(straat + " " + huisnummer + " " + postcode + " " + plaats + " " + BiC);
+                adressen.add(adres);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
-	}
+        return adressen;
+
+    }
 
 	@Override
 	public Klant getKlant(int klantId) {

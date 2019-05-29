@@ -11,6 +11,14 @@ public class AdresLaderImpl  implements AdresLader {
     private LegacyJarLader legacyJarLader;
     private MysqlLader mysqlLader;
 
+    private int AdresID;
+    private String straat;
+    private String huisnummer;
+    private String postcode;
+    private String plaats;
+    private String BIC;
+    private boolean type;
+
     public AdresLaderImpl(LegacyJarLader legacyJarLader, MysqlLader mysqlLader) {
         this.legacyJarLader = legacyJarLader;
         this.mysqlLader = mysqlLader;

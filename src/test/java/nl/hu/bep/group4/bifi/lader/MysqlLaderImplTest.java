@@ -35,4 +35,17 @@ public class MysqlLaderImplTest {
         }
     }
 
+    @Test
+    public void getAdresTest(){
+        MysqlLaderImpl sql = new MysqlLaderImpl();
+
+        try {
+            sql.getAdres(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
 }
