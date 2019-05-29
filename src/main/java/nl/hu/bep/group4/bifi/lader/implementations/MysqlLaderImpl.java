@@ -69,6 +69,7 @@ public class MysqlLaderImpl implements MysqlLader {
                 e.printStackTrace();
             }
         }
+        con.close();
         return adressen;
 
     }
