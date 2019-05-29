@@ -80,12 +80,41 @@ public class MysqlLaderImpl implements MysqlLader {
 		return null;
 	}
 
+	// moet deze niet maar 1 persoon terug geven?
 	@Override
-	public List<Persoon> getPersoon(int klantId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public List<Persoon> getPersoon(int klantId) throws SQLException {
+        connectDatabase();
+        Statement stmt;
+        ResultSet rs= null;
+        String query = "select * from Persoon where KlantID = " + klantId;
+        List<Persoon> personen = new ArrayList<>();
 
+        try {
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        while(rs.next()) {
+            try {
+                String voornaam = rs.getString("Voornaam");
+                String tussenvoegsel = rs.getString("Tussenvoegsel");
+                String achternaam = rs.getString("Achternaam");
+                String telefoon = rs.getString("Telefoon");
+                String fax = rs.getString("Fax");
+//              String Geslacht = rs.getString("Geslacht");
+
+                Persoon persoon = new Persoon(voornaam,achternaam,tussenvoegsel,telefoon,fax);
+                System.out.println(voornaam + " " + achternaam + " " + tussenvoegsel + " " + telefoon + " " + fax);
+                personen.add(persoon);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        con.close();
+        return personen;
+    }
 
 }
 

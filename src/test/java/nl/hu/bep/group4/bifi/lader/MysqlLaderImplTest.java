@@ -46,6 +46,17 @@ public class MysqlLaderImplTest {
         }
     }
 
+    @Test
+    public void getPersoonTest(){
+        MysqlLaderImpl sql = new MysqlLaderImpl();
+
+        try {
+            sql.getPersoon(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
 }
