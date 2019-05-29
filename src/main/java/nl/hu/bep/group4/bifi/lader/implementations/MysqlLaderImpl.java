@@ -76,8 +76,37 @@ public class MysqlLaderImpl implements MysqlLader {
 
 	@Override
 	public Klant getKlant(int klantId) {
-		// TODO Auto-generated method stub
-		return null;
+        connectDatabase();
+        Statement stmt;
+        ResultSet rs= null;
+        String query = "select * from Klant where KlantID = " + klantId;
+
+        try {
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        while(rs.next()) {
+            try {
+                String bedrijfsnaam = rs.getString("bedrijfsnaam");
+                String rechtsvorm = rs.getString("rechtsvorm");
+                String vAT = rs.getString("vAT");
+                String bankrekeningNummer = rs.getString("bankrekeningNummer");
+                String giroNummer = rs.getString("giroNummer");
+                String biC = rs.getString("biC");
+//                private List<Persoon> contactPersonen;
+//                private List<Adres> adres;
+//                private Adres factuurAdres;
+                Klant klant = new Persoon(bedrijfsnaam,rechtsvorm,vAT,bankrekeningNummer,giroNummer,biC);
+                System.out.println(bedrijfsnaam + " " + rechtsvorm + " " + vAT + " " + bankrekeningNummer + " " + giroNummer + " " + biC);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        con.close();
+        return klant;
 	}
 
 	// moet deze niet maar 1 persoon terug geven?
