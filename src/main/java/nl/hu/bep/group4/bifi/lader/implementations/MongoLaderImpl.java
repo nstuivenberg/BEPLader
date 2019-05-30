@@ -6,7 +6,6 @@ import nl.hu.bep.group4.bifi.model.Factuur;
 import nl.hu.bep.group4.bifi.model.FactuurRegel;
 import nl.hu.bep.group4.bifi.model.FactuurRegel.BTWcode;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -25,16 +24,12 @@ public class MongoLaderImpl implements MongoLader {
 
 	public MongoCollection<Document> connectToMongoDB() {
 		MongoCollection<Document> BEPBifi = null;
-		try {
-			String database = "BEPBifi";
-			
-			MongoClientURI uri = new MongoClientURI("mongodb+srv://dbUser:112112@cluster0-vk3z3.mongodb.net/test?retryWrites=true");
-			MongoClient mongoClient = new MongoClient(uri);
-			db = mongoClient.getDatabase(database);
-			BEPBifi = db.getCollection("BEPBifi");
-		}catch(Exception e) {
-			System.out.println("Exception in handling the request. Exception = " + e);
-		}
+		String database = "BEPBifi";
+		
+		MongoClientURI uri = new MongoClientURI("mongodb+srv://dbUser:112112@cluster0-vk3z3.mongodb.net/test?retryWrites=true");
+		MongoClient mongoClient = new MongoClient(uri);
+		db = mongoClient.getDatabase(database);
+		BEPBifi = db.getCollection("BEPBifi");
 		return BEPBifi;
 	}
 
@@ -50,15 +45,13 @@ public class MongoLaderImpl implements MongoLader {
 			Document factuurVanMongo = it.next();
 			
 			Date date = factuurVanMongo.getDate("date");
-			Calendar newDate = Calendar.getInstance();
-			newDate.setTime(date);
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy MMM dd HH:mm:ss");
-			String newDate2 = sdf.format(newDate.getTime()); 						//Geeft string terug. Is dus noodzakelijk om voledige date te gebruiken in de backend.
+			Calendar factuurDate = Calendar.getInstance();
+			factuurDate.setTime(date);
+			Calendar dateToday = Calendar.getInstance();
 			
-			
-			if (maandNummer == newDate.get(Calendar.MONTH)) {
+			if (factuurDate.get(Calendar.MONTH) == dateToday.get(Calendar.MONTH)) {
 				Factuur factuur = new Factuur();
-				factuur.setDatumtijd(factuurVanMongo.getDate(newDate2));
+				factuur.setDatumtijd(date.toString());
 				factuur.setFactuurNummer(factuurVanMongo.getInteger("invoiceId"));
 				factuur.setOpmerking(factuurVanMongo.getString("note"));
 				
@@ -97,31 +90,10 @@ public class MongoLaderImpl implements MongoLader {
 					}
 					
 				}
-			}
-
-			
+			}	
 		}
 		System.out.println("End of getFacturenVoorMaand()");
 		return xy;	
 	}
 	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
