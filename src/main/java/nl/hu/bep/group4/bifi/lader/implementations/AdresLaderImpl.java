@@ -48,12 +48,11 @@ public class AdresLaderImpl  implements AdresLader {
 		
 		for (Adres adres : mysqlAdressen) {
 			String straat = adres.getStraat();
-			char eersteChar;
 			if (straat == null || straat.equals("")) {
 				//
 			}
 			else {
-				eersteChar = straat.charAt(0);
+				char eersteChar = straat.charAt(0);
 				if (eersteChar == '-') {
 					String sleutel = straat.substring(1);
 					adresSleutelsTeVindenInLegacy.add(sleutel);

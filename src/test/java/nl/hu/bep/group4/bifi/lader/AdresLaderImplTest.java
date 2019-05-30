@@ -22,8 +22,23 @@ public class AdresLaderImplTest {
 		LegacyJarLader legacyJarLader = new LegacyJarLader() {
 			@Override
 			public Adres laadAdres(String sleutel) throws IOException {
-
-				return null;
+				Adres adres;
+				switch(sleutel) {
+					case "MOATA":
+						adres = new Adres("Ajax", "5", "1901CD", "Rotterdam", "testBIC1");
+						break;
+					/*
+					case "NIPJK":
+						adres = new Adres("Hakkelaar", "90", "5202HL", "Den Haag", "testBIC2");
+						break;
+					case "KDLRA":
+						adres = new Adres("Wassenlaan", "358", "4302CD", "Zevenhuizen", "testBIC3");
+						break;
+					*/
+					default:
+						return null;
+				}
+				return adres;
 			}
 		};
 		MysqlLader mysqlLader = new MysqlLader() {			
@@ -40,8 +55,29 @@ public class AdresLaderImplTest {
 
 			@Override
 			public List<Adres> getAdressen(int klantId) throws SQLException, ClassNotFoundException {
-				// TODO Auto-generated method stub
-				return null;
+				List<Adres> adressen = new ArrayList<Adres>();
+				switch(klantId) {
+					case 0:
+						return null;
+					case 1:
+						adressen.add(new Adres("Steenweg","59","3511JN","Utrecht","DABAIE2D"));
+						adressen.add(new Adres("Steenweg","59","3511JN","Utrecht","DABAIE2D"));
+						break;
+					case 2:
+						adressen.add(new Adres("Steenweg","32","3500EE","Utrecht","DABAIE2D"));
+						adressen.add(new Adres("-MOATA",null,null,null,null));
+						break;
+					/*
+					case 3:
+						adressen.add(new Adres("-NIPJK",null,null,null,null));
+						adressen.add(new Adres("-KDLRA",null,null,null,null));
+						break;
+					*/
+					default:
+						break;
+				}
+				return adressen;
+
 			}
 
 			@Override
@@ -55,7 +91,33 @@ public class AdresLaderImplTest {
 	
 	@Test
 	public void testOntbrekendeKlant() throws SQLException, IOException, ClassNotFoundException {
-		assertNull(lader.getAdressen(0));
+		List<Adres> al = lader.getAdressen(0);
+		assertNull(al);
+	}
+
+	@Test
+	public void testAdresUitMysqlLader() throws SQLException, IOException, ClassNotFoundException {
+		Adres a = lader.getAdressen(1).get(0);
+		assertEquals(a.getStraat(), "Steenweg");
+		assertEquals(a.getHuisnummer(), "59");
+		assertEquals(a.getPostcode(), "3511JN");
+		assertEquals(a.getPlaats(), "Utrecht");
+		assertEquals(a.getBiC(), "DABAIE2D");
 	}
 	
+	@Test
+	public void testAdresUitLegacyJarLader() throws SQLException, IOException, ClassNotFoundException {
+		Adres a = lader.getAdressen(2).get(1);
+		assertEquals(a.getStraat(), "Ajax");
+		assertEquals(a.getHuisnummer(), "5");
+		assertEquals(a.getPostcode(), "1901CD");
+		assertEquals(a.getPlaats(), "Rotterdam");
+		assertEquals(a.getBiC(), "testBIC1");
+	}
+
+	@Test
+	public void testAdresVanOngeldigeKlant() throws SQLException, IOException, ClassNotFoundException {
+		List<Adres> al = lader.getAdressen(4);
+		assertNull(al);
+	}
 }
