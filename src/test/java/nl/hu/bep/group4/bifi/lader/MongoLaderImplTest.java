@@ -7,16 +7,15 @@ import org.junit.jupiter.api.Test;
 
 public class MongoLaderImplTest {
 
-	MongoLaderImpl mongo = null;
 
-	public MongoLader setup() {
+	public MongoLaderImpl setup() {
 		return new MongoLaderImpl();
 	}
 	
 	@Test
 	public void testConnection() {
-		mongo.connectToMongoDB();
-		System.out.println(mongo.connectToMongoDB());
+		MongoLaderImpl mongoLader = setup();
+		System.out.println(mongoLader.connectToMongoDB());
 	}
 	
 	@Test
