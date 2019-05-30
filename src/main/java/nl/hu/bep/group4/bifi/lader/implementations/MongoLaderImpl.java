@@ -33,10 +33,13 @@ public class MongoLaderImpl implements MongoLader {
 		return BEPBifi;
 	}
 
+	/**
+	 * Accepteert maandnummer (0-11)
+	 */
 	@Override
 	public List<Factuur> getFacturenVoorMaand(int maandNummer) throws GarbageDataException {
 		
-		List<Factuur> xy = new ArrayList<>();
+		List<Factuur> facturen = new ArrayList<>();
 		
 		MongoCollection<Document> collection = connectToMongoDB();
 		Iterator<Document> it = collection.find().iterator();
@@ -47,13 +50,14 @@ public class MongoLaderImpl implements MongoLader {
 			Date date = factuurVanMongo.getDate("date");
 			Calendar factuurDate = Calendar.getInstance();
 			factuurDate.setTime(date);
-			Calendar dateToday = Calendar.getInstance();
 			
-			if (factuurDate.get(Calendar.MONTH) == dateToday.get(Calendar.MONTH)) {
+			if (factuurDate.get(Calendar.MONTH) == maandNummer) {
 				Factuur factuur = new Factuur();
 				factuur.setDatumtijd(date.toString());
 				factuur.setFactuurNummer(factuurVanMongo.getInteger("invoiceId"));
 				factuur.setOpmerking(factuurVanMongo.getString("note"));
+				
+				List<FactuurRegel> factuurRegels = new ArrayList<>();
 				
 				List<Document> linesOfFactuur = factuurVanMongo.getList("invoiceLines", Document.class);
 				for(Document line : linesOfFactuur) {
@@ -86,14 +90,18 @@ public class MongoLaderImpl implements MongoLader {
 							break;
 						default:
 							throw new GarbageDataException("Onbekende btwCode " + btwCode);
-						
 					}
-					
+					factuurRegels.add(factuurRegel);	
 				}
-			}	
+				factuur.setFactuurregels(factuurRegels);
+				facturen.add(factuur);
+			}
+		}
+		for(Factuur f : facturen) {
+			System.out.println(f.toString());
 		}
 		System.out.println("End of getFacturenVoorMaand()");
-		return xy;	
+		return facturen;	
 	}
 	
 }
