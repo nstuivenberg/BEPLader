@@ -16,8 +16,6 @@ public class PersoonLaderImpl implements PersoonLader {
 
 	@Override
 	public List<Persoon> getPersoon(int klantId) throws SQLException, ClassNotFoundException {
-        List<Persoon> persoonList = mysqlLader.getPersonen(klantId);
-
-        return persoonList;
+        return mysqlLader.getPersonen(klantId);
 	}
 }

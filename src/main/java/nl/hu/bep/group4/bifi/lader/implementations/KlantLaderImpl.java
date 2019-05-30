@@ -2,7 +2,11 @@ package nl.hu.bep.group4.bifi.lader.implementations;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import nl.hu.bep.group4.bifi.lader.*;
+
+import nl.hu.bep.group4.bifi.lader.AdresLader;
+import nl.hu.bep.group4.bifi.lader.KlantLader;
+import nl.hu.bep.group4.bifi.lader.MysqlLader;
+import nl.hu.bep.group4.bifi.lader.PersoonLader;
 import nl.hu.bep.group4.bifi.model.Klant;
 
 public class KlantLaderImpl implements KlantLader {
