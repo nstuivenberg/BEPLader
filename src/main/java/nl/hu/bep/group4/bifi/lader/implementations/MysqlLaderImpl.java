@@ -75,9 +75,7 @@ public class MysqlLaderImpl implements MysqlLader {
                 List<Adres> adres = new ArrayList<>();
                 Adres factuurAdres = null;
 
-                String klantIdConverted = klantId + "";
-
-                klant = new Klant(klantIdConverted, bedrijfsnaam,rechtsvorm,vAT,bankrekeningNummer,giroNummer,biC,contactPersonen,adres,factuurAdres);
+                klant = new Klant(klantId, bedrijfsnaam,rechtsvorm,vAT,bankrekeningNummer,giroNummer,biC,contactPersonen,adres,factuurAdres);
         }
         con.close();
         return klant;
@@ -103,15 +101,13 @@ public class MysqlLaderImpl implements MysqlLader {
             String fax = resultSet.getString("Fax");
             String geslacht = resultSet.getString("Geslacht");
 
-            String convertedPersoonId = persoonId + "";
-
             Persoon.Geslacht convertedSex = Persoon.Geslacht.VROUW;
 
             if(("0").equals(geslacht) || ("m").equalsIgnoreCase(geslacht)) {
                 convertedSex = Persoon.Geslacht.MAN;
             }
             
-            Persoon persoon = new Persoon(convertedPersoonId, voornaam,achternaam,tussenvoegsel,telefoon,fax, convertedSex);
+            Persoon persoon = new Persoon(persoonId, voornaam,achternaam,tussenvoegsel,telefoon,fax, convertedSex);
             personen.add(persoon);
         }
         con.close();
@@ -147,4 +143,10 @@ public class MysqlLaderImpl implements MysqlLader {
         con.close();
         return factuurAdres;
     }
+
+	@Override
+	public Persoon getPersoon(int persoonId) throws SQLException, ClassNotFoundException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

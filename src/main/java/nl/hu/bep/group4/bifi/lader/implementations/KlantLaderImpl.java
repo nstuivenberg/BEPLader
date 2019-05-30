@@ -26,7 +26,7 @@ public class KlantLaderImpl implements KlantLader {
         klantFromDatabase.setAdres(adresLader.getAdressen(klantId));
         klantFromDatabase.setFactuurAdres(adresLader.getFactuurAdres(klantId));
 
-        klantFromDatabase.setContactPersonen(persoonLader.getPersoon(klantId));
+        klantFromDatabase.setContactPersonen(persoonLader.getPersonen(klantId));
 
         return klantFromDatabase;
 	}

@@ -68,6 +68,11 @@ public class AdresLaderImplTest {
 			public List<Persoon> getPersonen(int klantId) throws SQLException, ClassNotFoundException {
 				return null;
 			}
+
+			@Override
+			public Persoon getPersoon(int persoonId) throws SQLException, ClassNotFoundException {
+				return null;
+			}
 		};
 		return new AdresLaderImpl(legacyJarLader, mysqlLader);
 	}

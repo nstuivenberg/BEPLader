@@ -12,5 +12,6 @@ public interface MysqlLader {
 	List<Adres> getAdressen(int klantId) throws SQLException, ClassNotFoundException;
 	Klant getKlant(int klantId) throws SQLException, ClassNotFoundException;
 	List<Persoon> getPersonen(int klantId) throws SQLException, ClassNotFoundException;
+	Persoon getPersoon(int persoonId) throws SQLException, ClassNotFoundException;
 	Adres getFactuurAdres(int klantId) throws SQLException, ClassNotFoundException, GarbageDataException;
 }
