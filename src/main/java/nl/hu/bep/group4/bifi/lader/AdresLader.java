@@ -7,6 +7,6 @@ import java.util.List;
 import nl.hu.bep.group4.bifi.model.Adres;
 
 public interface AdresLader {
-	List<Adres> getAdres(int klantId) throws SQLException, IOException, ClassNotFoundException;
+	List<Adres> getAdressen(int klantId) throws SQLException, IOException, ClassNotFoundException;
 	Adres getFactuurAdres(int klantId);
 }
