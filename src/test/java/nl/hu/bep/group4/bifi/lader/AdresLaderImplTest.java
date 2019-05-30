@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import nl.hu.bep.group4.bifi.lader.implementations.AdresLaderImpl;
@@ -17,10 +16,8 @@ import nl.hu.bep.group4.bifi.model.Klant;
 import nl.hu.bep.group4.bifi.model.Persoon;
 
 public class AdresLaderImplTest {
-	private AdresLader lader;
-	
-	@BeforeEach
-	public void setup() {
+
+	private AdresLader setup() {
 		LegacyJarLader legacyJarLader = new LegacyJarLader() {
 			@Override
 			public Adres laadAdres(String sleutel) throws IOException {
@@ -38,7 +35,6 @@ public class AdresLaderImplTest {
 		MysqlLader mysqlLader = new MysqlLader() {			
 			@Override
 			public Klant getKlant(int klantId) {
-				//
 				return null;
 			}
 
@@ -49,7 +45,7 @@ public class AdresLaderImplTest {
 
 			@Override
 			public List<Adres> getAdressen(int klantId) throws SQLException, ClassNotFoundException {
-				List<Adres> adressen = new ArrayList<>();
+				List<Adres> adressen = new ArrayList<Adres>();
 				switch(klantId) {
 					case 0:
 						return null;
@@ -70,21 +66,22 @@ public class AdresLaderImplTest {
 
 			@Override
 			public List<Persoon> getPersonen(int klantId) throws SQLException, ClassNotFoundException {
-				// TODO Auto-generated method stub
 				return null;
 			}
 		};
-		lader = new AdresLaderImpl(legacyJarLader, mysqlLader);
+		return new AdresLaderImpl(legacyJarLader, mysqlLader);
 	}
 	
 	@Test
 	public void testOntbrekendeKlant() throws SQLException, IOException, ClassNotFoundException {
+		AdresLader lader = setup();
 		List<Adres> al = lader.getAdressen(0);
 		assertNull(al);
 	}
 
 	@Test
 	public void testAdresUitMysqlLader() throws SQLException, IOException, ClassNotFoundException {
+		AdresLader lader = setup();
 		Adres a = lader.getAdressen(1).get(0);
 		assertEquals(a.getStraat(), "Steenweg");
 		assertEquals(a.getHuisnummer(), "59");
@@ -95,6 +92,7 @@ public class AdresLaderImplTest {
 	
 	@Test
 	public void testAdresUitLegacyJarLader() throws SQLException, IOException, ClassNotFoundException {
+		AdresLader lader = setup();
 		Adres a = lader.getAdressen(2).get(1);
 		assertEquals(a.getStraat(), "Ajax");
 		assertEquals(a.getHuisnummer(), "5");
@@ -105,6 +103,7 @@ public class AdresLaderImplTest {
 
 	@Test
 	public void testAdresVanOngeldigeKlant() throws SQLException, IOException, ClassNotFoundException {
+		AdresLader lader = setup();
 		List<Adres> al = lader.getAdressen(4);
 		assertNull(al);
 	}
