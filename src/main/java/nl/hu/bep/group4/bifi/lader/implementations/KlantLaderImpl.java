@@ -3,6 +3,7 @@ package nl.hu.bep.group4.bifi.lader.implementations;
 import java.io.IOException;
 import java.sql.SQLException;
 
+import nl.hu.bep.group4.bifi.exceptions.GarbageDataException;
 import nl.hu.bep.group4.bifi.lader.AdresLader;
 import nl.hu.bep.group4.bifi.lader.KlantLader;
 import nl.hu.bep.group4.bifi.lader.MysqlLader;
@@ -21,7 +22,7 @@ public class KlantLaderImpl implements KlantLader {
     }
 
 	@Override
-	public Klant getKlant(int klantId) throws SQLException, IOException, ClassNotFoundException {
+	public Klant getKlant(int klantId) throws SQLException, IOException, ClassNotFoundException, GarbageDataException {
         Klant klantFromDatabase = mysqlLader.getKlant(klantId);
         klantFromDatabase.setAdres(adresLader.getAdressen(klantId));
         klantFromDatabase.setFactuurAdres(adresLader.getFactuurAdres(klantId));

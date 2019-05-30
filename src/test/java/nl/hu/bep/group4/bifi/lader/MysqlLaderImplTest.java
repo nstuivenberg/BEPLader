@@ -1,5 +1,6 @@
 package nl.hu.bep.group4.bifi.lader;
 
+import nl.hu.bep.group4.bifi.exceptions.GarbageDataException;
 import nl.hu.bep.group4.bifi.lader.implementations.MysqlLaderImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,7 +24,7 @@ class getKlantMysqlLaderImplTest {
     }
 
     @Test
-    public void getPersoonTest() throws ClassNotFoundException, SQLException{
+    public void getPersonenTest() throws ClassNotFoundException, SQLException{
         MysqlLaderImpl sql = new MysqlLaderImpl();
 
         sql.getPersonen(1);
@@ -34,5 +35,12 @@ class getKlantMysqlLaderImplTest {
         MysqlLaderImpl sql = new MysqlLaderImpl();
 
         sql.getKlant(1);
+    }
+
+    @Test
+    public void getPersoonTest() throws ClassNotFoundException, SQLException, GarbageDataException {
+        MysqlLaderImpl sql = new MysqlLaderImpl();
+
+        sql.getPersoon(1);
     }
 }
