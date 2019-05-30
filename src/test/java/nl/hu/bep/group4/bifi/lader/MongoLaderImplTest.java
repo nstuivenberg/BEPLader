@@ -20,7 +20,8 @@ public class MongoLaderImplTest {
 	
 	@Test
 	public void getFacturenVoorMaandTest() throws GarbageDataException {
-		mongo.getFacturenVoorMaand(4);
+		MongoLaderImpl mongoLader = setup();
+		mongoLader.getFacturenVoorMaand(4);
 	}
 	
 	
