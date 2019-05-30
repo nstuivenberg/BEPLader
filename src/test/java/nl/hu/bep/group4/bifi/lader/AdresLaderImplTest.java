@@ -55,7 +55,7 @@ public class AdresLaderImplTest {
 	
 	@Test
 	public void testOntbrekendeKlant() throws SQLException, IOException, ClassNotFoundException {
-		assertNull(lader.getAdres(0));
+		assertNull(lader.getAdressen(0));
 	}
 	
 }
