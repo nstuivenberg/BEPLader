@@ -6,10 +6,6 @@ import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-
 class getKlantMysqlLaderImplTest {
 
     MysqlLaderImpl sql = null;
@@ -18,56 +14,25 @@ class getKlantMysqlLaderImplTest {
     public void beforeEach(){
          sql = new MysqlLaderImpl();
     }
-    @Test
-    public void testConnection(){
-
-       System.out.print( sql.connectDatabase());
-    }
 
     @Test
-    public void testGetAllKlanten(){
+    public void getAdresTest() throws ClassNotFoundException, SQLException{
         MysqlLaderImpl sql = new MysqlLaderImpl();
 
-        try {
-            sql.getAllKlanten();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        sql.getAdressen(1);
     }
 
     @Test
-    public void getAdresTest(){
+    public void getPersoonTest() throws ClassNotFoundException, SQLException{
         MysqlLaderImpl sql = new MysqlLaderImpl();
 
-        try {
-            sql.getAdres(1);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        sql.getPersonen(1);
     }
 
     @Test
-    public void getPersoonTest(){
+    public void getKlantTest() throws ClassNotFoundException, SQLException{
         MysqlLaderImpl sql = new MysqlLaderImpl();
 
-        try {
-            sql.getPersoon(1);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        sql.getKlant(1);
     }
-
-    @Test
-    public void getKlantTest(){
-        MysqlLaderImpl sql = new MysqlLaderImpl();
-
-        try {
-            sql.getKlant(1);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-
 }

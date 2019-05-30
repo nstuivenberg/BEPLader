@@ -1,6 +1,6 @@
 package nl.hu.bep.group4.bifi.lader.implementations;
 
-import java.util.ArrayList;
+import java.sql.SQLException;
 import java.util.List;
 
 import nl.hu.bep.group4.bifi.lader.MysqlLader;
@@ -15,10 +15,7 @@ public class PersoonLaderImpl implements PersoonLader {
     }
 
 	@Override
-	public List<Persoon> getPersoon(int klantId) {
-        List<Persoon> persoonList = new ArrayList<>();
-
- 		// TODO Auto-generated method stub
-		return null;
+	public List<Persoon> getPersoon(int klantId) throws SQLException, ClassNotFoundException {
+        return mysqlLader.getPersonen(klantId);
 	}
 }

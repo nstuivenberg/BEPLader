@@ -14,29 +14,21 @@ public class AdresLaderImpl  implements AdresLader {
     private LegacyJarLader legacyJarLader;
     private MysqlLader mysqlLader;
 
-    private int AdresID;
-    private String straat;
-    private String huisnummer;
-    private String postcode;
-    private String plaats;
-    private String BIC;
-    private boolean type;
-
     public AdresLaderImpl(LegacyJarLader legacyJarLader, MysqlLader mysqlLader) {
         this.legacyJarLader = legacyJarLader;
         this.mysqlLader = mysqlLader;
     }
 
 	@Override
-	public List<Adres> getAdres(int klantId) throws SQLException, IOException {
-		ArrayList<String> adresSleutelsTeVindenInLegacy = new ArrayList<String>();
-		List<Adres> resultaat = new ArrayList<Adres>();
+	public List<Adres> getAdressen(int klantId) throws SQLException, IOException, ClassNotFoundException {
+		ArrayList<String> adresSleutelsTeVindenInLegacy = new ArrayList<>();
+		List<Adres> resultaat = new ArrayList<>();
 		// Kan een Klant een klantId van 0 hebben?
 		// Of wordt -1 gebruikt als Id van ontbrekende Klant?
 		if (klantId == 0) {
 			return null;
 		}
-		List<Adres> mysqlAdressen = mysqlLader.getAdres(klantId);
+		List<Adres> mysqlAdressen = mysqlLader.getAdressen(klantId);
 		
 		/*
 		List<Adres> adres = null;
@@ -83,4 +75,9 @@ public class AdresLaderImpl  implements AdresLader {
 		
 		return resultaat;
 	}
+
+    @Override
+    public Adres getFactuurAdres(int klantId) {
+        return null;
+    }
 }

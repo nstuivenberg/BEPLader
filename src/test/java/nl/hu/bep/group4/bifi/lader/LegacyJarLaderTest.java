@@ -28,7 +28,7 @@ public class LegacyJarLaderTest {
 		assertEquals("1901CD", adres.getPostcode());
 		assertEquals("Ajax", adres.getStraat());
 		assertEquals("5", adres.getHuisnummer());
-		assertEquals(null, adres.getBiC());
+		assertNull(null, adres.getBiC());
 	}
 
 	@Test

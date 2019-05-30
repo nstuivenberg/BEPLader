@@ -1,7 +1,9 @@
 package nl.hu.bep.group4.bifi.lader;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import nl.hu.bep.group4.bifi.model.Klant;
 
 public interface KlantLader {
-	public Klant getKlant(int klantId);
+	Klant getKlant(int klantId) throws SQLException, IOException, ClassNotFoundException;
 }

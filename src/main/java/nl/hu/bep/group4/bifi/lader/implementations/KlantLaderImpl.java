@@ -1,6 +1,12 @@
 package nl.hu.bep.group4.bifi.lader.implementations;
 
-import nl.hu.bep.group4.bifi.lader.*;
+import java.io.IOException;
+import java.sql.SQLException;
+
+import nl.hu.bep.group4.bifi.lader.AdresLader;
+import nl.hu.bep.group4.bifi.lader.KlantLader;
+import nl.hu.bep.group4.bifi.lader.MysqlLader;
+import nl.hu.bep.group4.bifi.lader.PersoonLader;
 import nl.hu.bep.group4.bifi.model.Klant;
 
 public class KlantLaderImpl implements KlantLader {
@@ -15,11 +21,11 @@ public class KlantLaderImpl implements KlantLader {
     }
 
 	@Override
-	public Klant getKlant(int klantId) {
-
+	public Klant getKlant(int klantId) throws SQLException, IOException, ClassNotFoundException {
         Klant klantFromDatabase = mysqlLader.getKlant(klantId);
-
         klantFromDatabase.setAdres(adresLader.getAdres(klantId));
+        klantFromDatabase.setFactuurAdres(adresLader.getFactuurAdres(klantId));
+
         klantFromDatabase.setContactPersonen(persoonLader.getPersoon(klantId));
 
         return klantFromDatabase;
