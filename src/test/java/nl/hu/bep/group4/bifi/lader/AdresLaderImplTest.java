@@ -1,5 +1,7 @@
 package nl.hu.bep.group4.bifi.lader;
 
+import java.util.ArrayList;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.io.IOException;
@@ -55,7 +57,7 @@ public class AdresLaderImplTest {
 
 			@Override
 			public List<Adres> getAdressen(int klantId) throws SQLException, ClassNotFoundException {
-				List<Adres> adressen = new ArrayList<Adres>();
+				List<Adres> adressen = new ArrayList<>();
 				switch(klantId) {
 					case 0:
 						return null;
