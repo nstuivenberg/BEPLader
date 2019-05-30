@@ -6,11 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-
-public class MysqlLaderImplTest {
+class getKlantMysqlLaderImplTest {
 
     MysqlLaderImpl sql = null;
 
@@ -18,21 +14,25 @@ public class MysqlLaderImplTest {
     public void beforeEach(){
          sql = new MysqlLaderImpl();
     }
-    @Test
-    public void testConnection(){
-
-       System.out.print( sql.connectDatabase());
-    }
 
     @Test
-    public void testGetAllKlanten(){
+    public void getAdresTest() throws ClassNotFoundException, SQLException{
         MysqlLaderImpl sql = new MysqlLaderImpl();
 
-        try {
-            sql.getAllKlanten();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        sql.getAdressen(1);
     }
 
+    @Test
+    public void getPersoonTest() throws ClassNotFoundException, SQLException{
+        MysqlLaderImpl sql = new MysqlLaderImpl();
+
+        sql.getPersonen(1);
+    }
+
+    @Test
+    public void getKlantTest() throws ClassNotFoundException, SQLException{
+        MysqlLaderImpl sql = new MysqlLaderImpl();
+
+        sql.getKlant(1);
+    }
 }

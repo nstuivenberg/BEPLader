@@ -22,13 +22,14 @@ public class LegacyJarLaderTest {
 	
 	@Test
 	public void testAdressSleutelMOATA() throws IOException {
+	    lader = new LegacyJarLaderImpl();
 		Adres adres = lader.laadAdres("MOATA");
 		assertNotNull(adres);
 		assertEquals("Rotterdam", adres.getPlaats());
 		assertEquals("1901CD", adres.getPostcode());
 		assertEquals("Ajax", adres.getStraat());
 		assertEquals("5", adres.getHuisnummer());
-		assertEquals(null, adres.getBiC());
+		assertNull(null, adres.getBiC());
 	}
 
 	@Test
