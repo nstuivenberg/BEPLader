@@ -27,7 +27,6 @@ public class AdresLaderImpl  implements AdresLader {
 			return null;
 		}
 		List<Adres> mysqlAdressen = mysqlLader.getAdressen(klantId);
-
 		
 		if (mysqlAdressen.isEmpty()) {
 			return null;
@@ -35,10 +34,7 @@ public class AdresLaderImpl  implements AdresLader {
 		
 		for (Adres adres : mysqlAdressen) {
 			String straat = adres.getStraat();
-			if (straat == null || straat.equals("")) {
-				//
-			}
-			else {
+			if (straat != null && !straat.equals("")) {
 				char eersteChar = straat.charAt(0);
 				if (eersteChar == '-') {
 					String sleutel = straat.substring(1);
@@ -50,10 +46,7 @@ public class AdresLaderImpl  implements AdresLader {
 			}
 		}
 		
-		if (adresSleutelsTeVindenInLegacy.isEmpty()) {
-			//
-		}
-		else {
+		if (!adresSleutelsTeVindenInLegacy.isEmpty()) {
 			for (String sleutel : adresSleutelsTeVindenInLegacy) {
 				Adres a = legacyJarLader.laadAdres(sleutel);
 				resultaat.add(a);
