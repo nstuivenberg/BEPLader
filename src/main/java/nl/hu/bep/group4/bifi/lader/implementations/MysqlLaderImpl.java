@@ -75,10 +75,11 @@ public class MysqlLaderImpl implements MysqlLader {
     }
 
 	@Override
-	public Klant getKlant(int klantId) {
+	public Klant getKlant(int klantId) throws SQLException {
         connectDatabase();
         Statement stmt;
         ResultSet rs= null;
+        Klant klant = null;
         String query = "select * from Klant where KlantID = " + klantId;
 
         try {
@@ -89,21 +90,18 @@ public class MysqlLaderImpl implements MysqlLader {
         }
 
         while(rs.next()) {
-            try {
-                String bedrijfsnaam = rs.getString("bedrijfsnaam");
+                String bedrijfsnaam = rs.getString("Bedrijfsnaam");
                 String rechtsvorm = rs.getString("rechtsvorm");
-                String vAT = rs.getString("vAT");
-                String bankrekeningNummer = rs.getString("bankrekeningNummer");
-                String giroNummer = rs.getString("giroNummer");
-                String biC = rs.getString("biC");
-//                private List<Persoon> contactPersonen;
-//                private List<Adres> adres;
-//                private Adres factuurAdres;
-                Klant klant = new Persoon(bedrijfsnaam,rechtsvorm,vAT,bankrekeningNummer,giroNummer,biC);
+                String vAT = rs.getString("VAT");
+                String bankrekeningNummer = rs.getString("BankRek");
+                String giroNummer = rs.getString("Giro");
+                String biC = rs.getString("BiK");
+                List<Persoon> contactPersonen = new ArrayList<>();
+                List<Adres> adres = new ArrayList<>();
+                Adres factuurAdres = null;
+
+                klant = new Klant(bedrijfsnaam,rechtsvorm,vAT,bankrekeningNummer,giroNummer,biC,contactPersonen,adres,factuurAdres);
                 System.out.println(bedrijfsnaam + " " + rechtsvorm + " " + vAT + " " + bankrekeningNummer + " " + giroNummer + " " + biC);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
         con.close();
         return klant;

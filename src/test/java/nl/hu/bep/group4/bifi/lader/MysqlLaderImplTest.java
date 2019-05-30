@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class MysqlLaderImplTest {
+class getKlantMysqlLaderImplTest {
 
     MysqlLaderImpl sql = null;
 
@@ -52,6 +52,17 @@ public class MysqlLaderImplTest {
 
         try {
             sql.getPersoon(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void getKlantTest(){
+        MysqlLaderImpl sql = new MysqlLaderImpl();
+
+        try {
+            sql.getKlant(1);
         } catch (SQLException e) {
             e.printStackTrace();
         }

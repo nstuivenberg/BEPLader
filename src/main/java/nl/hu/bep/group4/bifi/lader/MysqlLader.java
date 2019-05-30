@@ -9,6 +9,6 @@ import nl.hu.bep.group4.bifi.model.Persoon;
 
 public interface MysqlLader {
 	public List<Adres> getAdres(int klantId) throws SQLException;
-	public Klant getKlant(int klantId);
+	public Klant getKlant(int klantId) throws SQLException;
 	public List<Persoon> getPersoon(int klantId) throws SQLException;
 }
