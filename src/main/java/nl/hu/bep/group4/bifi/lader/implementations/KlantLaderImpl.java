@@ -23,7 +23,7 @@ public class KlantLaderImpl implements KlantLader {
 	@Override
 	public Klant getKlant(int klantId) throws SQLException, IOException, ClassNotFoundException {
         Klant klantFromDatabase = mysqlLader.getKlant(klantId);
-        klantFromDatabase.setAdres(adresLader.getAdres(klantId));
+        klantFromDatabase.setAdres(adresLader.getAdressen(klantId));
         klantFromDatabase.setFactuurAdres(adresLader.getFactuurAdres(klantId));
 
         klantFromDatabase.setContactPersonen(persoonLader.getPersoon(klantId));
