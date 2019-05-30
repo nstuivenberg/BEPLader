@@ -1,11 +1,15 @@
 package nl.hu.bep.group4.bifi.lader.implementations;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import nl.hu.bep.group4.bifi.lader.MysqlLader;
 import nl.hu.bep.group4.bifi.model.Adres;
 import nl.hu.bep.group4.bifi.model.Klant;
 import nl.hu.bep.group4.bifi.model.Persoon;
 
-import java.sql.* ;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -140,7 +144,7 @@ public class MysqlLaderImpl implements MysqlLader {
                 if(("0").equals(geslacht) || ("m").equalsIgnoreCase(geslacht)) {
                     convertedSex = Persoon.Geslacht.MAN;
                 }
-                
+
                 Persoon persoon = new Persoon(voornaam,achternaam,tussenvoegsel,telefoon,fax, convertedSex);
                 System.out.println(voornaam + " " + achternaam + " " + tussenvoegsel + " " + telefoon + " " + fax);
                 personen.add(persoon);
