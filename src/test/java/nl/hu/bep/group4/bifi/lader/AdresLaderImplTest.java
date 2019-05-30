@@ -1,11 +1,11 @@
 package nl.hu.bep.group4.bifi.lader;
 
+import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -57,7 +57,7 @@ public class AdresLaderImplTest {
 
 			@Override
 			public List<Adres> getAdressen(int klantId) throws SQLException, ClassNotFoundException {
-				List<Adres> adressen = new ArrayList<Adres>();
+				List<Adres> adressen = new ArrayList<>();
 				switch(klantId) {
 					case 0:
 						return null;
@@ -79,7 +79,7 @@ public class AdresLaderImplTest {
 						break;
 				}
 				return adressen;
-				
+
 			}
 
 			@Override
@@ -96,7 +96,7 @@ public class AdresLaderImplTest {
 		List<Adres> al = lader.getAdressen(0);
 		assertNull(al);
 	}
-	
+
 	@Test
 	public void testAdresUitMysqlLader() throws SQLException, IOException, ClassNotFoundException {
 		Adres a = lader.getAdressen(1).get(0);
@@ -116,7 +116,7 @@ public class AdresLaderImplTest {
 		assertEquals(a.getPlaats(), "Rotterdam");
 		assertEquals(a.getBiC(), "testBIC1");
 	}
-	
+
 	@Test
 	public void testAdresVanOngeldigeKlant() throws SQLException, IOException, ClassNotFoundException {
 		List<Adres> al = lader.getAdressen(4);
