@@ -32,7 +32,7 @@ public class MysqlLaderImpl implements MysqlLader {
         connectDatabase();
         Statement stmt;
         ResultSet resultSet = null;
-        String query = "select * from Adres where KlantID = " + klantId + "AND Type <> " + ADRESSTYPE;
+        String query = "select * from Adres where KlantID = " + klantId + " AND Type <> '" + ADRESSTYPE + "'";
         List<Adres> adressen = new ArrayList<>();
 
         stmt = con.createStatement();
