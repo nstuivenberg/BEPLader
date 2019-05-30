@@ -1,12 +1,16 @@
 package nl.hu.bep.group4.bifi.lader.implementations;
 
 import nl.hu.bep.group4.bifi.lader.MysqlLader;
+import nl.hu.bep.group4.bifi.model.Adres;
+import nl.hu.bep.group4.bifi.model.Klant;
+import nl.hu.bep.group4.bifi.model.Persoon;
 
 import java.sql.* ;
+import java.util.List;
 
 
 public class MysqlLaderImpl implements MysqlLader {
-    Connection con = null;
+    private Connection con = null;
 
     public Connection connectDatabase() {
         try {
@@ -32,6 +36,24 @@ public class MysqlLaderImpl implements MysqlLader {
                     rs.getString("Rechtsvorm"));
         con.close();
     }
+
+	@Override
+	public List<Adres> getAdres(int klantId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Klant getKlant(int klantId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Persoon> getPersoon(int klantId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 
 }

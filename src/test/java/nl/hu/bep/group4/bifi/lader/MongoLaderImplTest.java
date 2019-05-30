@@ -1,5 +1,6 @@
 package nl.hu.bep.group4.bifi.lader;
 
+import nl.hu.bep.group4.bifi.exceptions.GarbageDataException;
 import nl.hu.bep.group4.bifi.lader.implementations.MongoLaderImpl;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -18,6 +19,11 @@ public class MongoLaderImplTest {
 	public void testConnection() {
 		mongo.connectToMongoDB();
 		System.out.println(mongo.connectToMongoDB());
+	}
+	
+	@Test
+	public void getFacturenVoorMaandTest() throws GarbageDataException {
+		mongo.getFacturenVoorMaand(4);
 	}
 	
 	

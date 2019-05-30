@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import java.io.IOException;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import nl.hu.bep.group4.bifi.lader.implementations.LegacyJarLaderImpl;
@@ -22,7 +21,6 @@ public class LegacyJarLaderTest {
 	}
 	
 	@Test
-	@Disabled("Disabled want Wercker.")
 	public void testAdressSleutelMOATA() throws IOException {
 		Adres adres = lader.laadAdres("MOATA");
 		assertNotNull(adres);
@@ -32,9 +30,8 @@ public class LegacyJarLaderTest {
 		assertEquals("5", adres.getHuisnummer());
 		assertEquals(null, adres.getBiC());
 	}
-	
+
 	@Test
-	@Disabled("Disabled want Wercker.")
 	public void testAdressSleutelKDLRA() throws IOException  {
 		Adres adres = lader.laadAdres("KDLRA");
 		assertNotNull(adres);
@@ -46,14 +43,12 @@ public class LegacyJarLaderTest {
 	}
 	
 	@Test
-	@Disabled("Disabled want Wercker.")
 	public void testMeerdereAdressenAchterElkaar() throws IOException { //voor het geval de legacy jar daar niet tegen kan
 		testAdressSleutelMOATA();
 		testAdressSleutelKDLRA();
 	}
 	
 	@Test
-	@Disabled("Disabled want Wercker.")
 	public void testNietBestaandeAdressSleutel() throws IOException {
 		Adres adres = lader.laadAdres("niet-bestaand");
 		assertNull(adres);

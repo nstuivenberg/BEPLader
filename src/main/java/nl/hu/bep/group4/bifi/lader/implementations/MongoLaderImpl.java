@@ -1,9 +1,17 @@
 package nl.hu.bep.group4.bifi.lader.implementations;
 
+import nl.hu.bep.group4.bifi.exceptions.GarbageDataException;
 import nl.hu.bep.group4.bifi.lader.MongoLader;
+import nl.hu.bep.group4.bifi.model.Factuur;
+import nl.hu.bep.group4.bifi.model.FactuurRegel;
+import nl.hu.bep.group4.bifi.model.FactuurRegel.BTWcode;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 
 import org.bson.Document;
 
@@ -15,41 +23,105 @@ import com.mongodb.client.MongoDatabase;
 public class MongoLaderImpl implements MongoLader {
 	MongoDatabase db = null;
 
-	public MongoDatabase connectToMongoDB() {
+	public MongoCollection<Document> connectToMongoDB() {
+		MongoCollection<Document> BEPBifi = null;
 		try {
-			System.out.println("begin connecting");
-			
 			String database = "BEPBifi";
 			
 			MongoClientURI uri = new MongoClientURI("mongodb+srv://dbUser:112112@cluster0-vk3z3.mongodb.net/test?retryWrites=true");
 			MongoClient mongoClient = new MongoClient(uri);
 			db = mongoClient.getDatabase(database);
-			MongoCollection<Document> xy = db.getCollection("BEPBifi");
-			
-//			Iterator<Document> it = xy.find().iterator();
-//			
-//			System.out.println(it.hasNext());
-//			
-//			while(it.hasNext()){
-//				Document mail = it.next();
-//				//String subject = mail.getString("date");
-//				Date date = mail.getDate("date");
-//				System.out.println(date);
-//			}
-//			
-//			mongoClient.close();
-//			
-//			System.out.println("connection closed");
-//			
+			BEPBifi = db.getCollection("BEPBifi");
 		}catch(Exception e) {
-			System.out.println("exception in handling the request. Exception = " + e);
+			System.out.println("Exception in handling the request. Exception = " + e);
 		}
-		return db;
+		return BEPBifi;
+	}
+
+	@Override
+	public List<Factuur> getFacturenVoorMaand(int maandNummer) throws GarbageDataException {
+		
+		List<Factuur> xy = new ArrayList<>();
+		
+		MongoCollection<Document> collection = connectToMongoDB();
+		Iterator<Document> it = collection.find().iterator();
+		while(it.hasNext()) {
+			
+			Document factuurVanMongo = it.next();
+			
+			Date date = factuurVanMongo.getDate("date");
+			Calendar newDate = Calendar.getInstance();
+			newDate.setTime(date);
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy MMM dd HH:mm:ss");
+			String newDate2 = sdf.format(newDate.getTime()); 						//Geeft string terug. Is dus noodzakelijk om voledige date te gebruiken in de backend.
+			
+			
+			if (maandNummer == newDate.get(Calendar.MONTH)) {
+				Factuur factuur = new Factuur();
+				factuur.setDatumtijd(factuurVanMongo.getDate(newDate2));
+				factuur.setFactuurNummer(factuurVanMongo.getInteger("invoiceId"));
+				factuur.setOpmerking(factuurVanMongo.getString("note"));
+				
+				List<Document> linesOfFactuur = factuurVanMongo.getList("invoiceLines", Document.class);
+				for(Document line : linesOfFactuur) {
+					FactuurRegel factuurRegel = new FactuurRegel();
+					factuurRegel.setAantal(line.getInteger("quantity"));
+					factuurRegel.setProductID(line.getInteger("productId"));
+					factuurRegel.setProductNaam(line.getString("productName"));
+					Object prijsObj = line.get("totalPrice");
+					if(prijsObj instanceof Double) {
+						factuurRegel.setTotaalprijsExBTW((Double)prijsObj);	
+					} else if(prijsObj instanceof Integer) {
+						factuurRegel.setTotaalprijsExBTW(((Integer)prijsObj).doubleValue());
+					} else {
+						throw new GarbageDataException("totalPrice heeft als type "+prijsObj.getClass().getName());
+					}
+					
+					String btwCode = line.getString("btwCode").toLowerCase();
+					switch (btwCode) {
+						case "hoog":
+						case "high":
+							factuurRegel.setBtwCode(BTWcode.HOOG);
+							break;
+						case "laag":
+						case "low":
+							factuurRegel.setBtwCode(BTWcode.LAAG);
+							break;
+						case "geen":
+						case "none":
+							factuurRegel.setBtwCode(BTWcode.GEEN);
+							break;
+						default:
+							throw new GarbageDataException("Onbekende btwCode " + btwCode);
+						
+					}
+					
+				}
+			}
+
+			
+		}
+		System.out.println("End of getFacturenVoorMaand()");
+		return xy;	
 	}
 	
-	
-	
-	
-	
-	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
