@@ -29,14 +29,6 @@ public class AdresLaderImplTest {
 					case "MOATA":
 						adres = new Adres("Ajax", "5", "1901CD", "Rotterdam", "testBIC1");
 						break;
-					/*
-					case "NIPJK":
-						adres = new Adres("Hakkelaar", "90", "5202HL", "Den Haag", "testBIC2");
-						break;
-					case "KDLRA":
-						adres = new Adres("Wassenlaan", "358", "4302CD", "Zevenhuizen", "testBIC3");
-						break;
-					*/
 					default:
 						return null;
 				}
@@ -68,12 +60,6 @@ public class AdresLaderImplTest {
 						adressen.add(new Adres("Steenweg","32","3500EE","Utrecht","DABAIE2D"));
 						adressen.add(new Adres("-MOATA",null,null,null,null));
 						break;
-					/*
-					case 3:
-						adressen.add(new Adres("-NIPJK",null,null,null,null));
-						adressen.add(new Adres("-KDLRA",null,null,null,null));
-						break;
-					*/
 					default:
 						break;
 				}
