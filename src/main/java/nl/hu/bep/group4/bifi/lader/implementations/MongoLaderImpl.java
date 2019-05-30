@@ -5,6 +5,8 @@ import nl.hu.bep.group4.bifi.lader.MongoLader;
 import nl.hu.bep.group4.bifi.model.Factuur;
 import nl.hu.bep.group4.bifi.model.FactuurRegel;
 import nl.hu.bep.group4.bifi.model.FactuurRegel.BTWcode;
+import nl.hu.bep.group4.bifi.model.Klant;
+import nl.hu.bep.group4.bifi.model.Persoon;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -56,6 +58,9 @@ public class MongoLaderImpl implements MongoLader {
 				factuur.setDatumtijd(date.toString());
 				factuur.setFactuurNummer(factuurVanMongo.getInteger("invoiceId"));
 				factuur.setOpmerking(factuurVanMongo.getString("note"));
+				factuur.setContactPersoon(new Persoon(factuurVanMongo.getInteger("personId")));
+				factuur.setKlant(new Klant(factuurVanMongo.getInteger("customerId")));
+				
 				
 				List<FactuurRegel> factuurRegels = new ArrayList<>();
 				
