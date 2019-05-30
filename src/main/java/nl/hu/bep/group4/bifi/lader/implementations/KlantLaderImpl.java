@@ -16,9 +16,12 @@ public class KlantLaderImpl implements KlantLader {
 
 	@Override
 	public Klant getKlant(int klantId) {
-		// TODO Auto-generated method stub
-		return null;
+
+        Klant klantFromDatabase = mysqlLader.getKlant(klantId);
+
+        klantFromDatabase.setAdres(adresLader.getAdres(klantId));
+        klantFromDatabase.setContactPersonen(persoonLader.getPersoon(klantId));
+
+        return klantFromDatabase;
 	}
-
-
 }
