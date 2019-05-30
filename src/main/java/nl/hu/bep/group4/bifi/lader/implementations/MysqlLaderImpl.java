@@ -1,12 +1,16 @@
 package nl.hu.bep.group4.bifi.lader.implementations;
 
 import nl.hu.bep.group4.bifi.exceptions.GarbageDataException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import nl.hu.bep.group4.bifi.lader.MysqlLader;
 import nl.hu.bep.group4.bifi.model.Adres;
 import nl.hu.bep.group4.bifi.model.Klant;
 import nl.hu.bep.group4.bifi.model.Persoon;
 
-import java.sql.* ;
 import java.util.ArrayList;
 import java.util.List;
 
