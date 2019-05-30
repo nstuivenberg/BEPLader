@@ -24,11 +24,10 @@ public class FactuurLaderImpl implements FactuurLader {
 
 	@Override
 	public List<Factuur> getFacturenVoorMaand(int maandNummer) throws GarbageDataException, ClassNotFoundException, SQLException, IOException {
-		this.persoonLader.getPersoon(1);
-		List<Factuur> facturen = this.mongoLader.getFacturenVoorMaand(1);
+		List<Factuur> facturen = this.mongoLader.getFacturenVoorMaand(maandNummer);
 		for(Factuur factuur : facturen) {
 			factuur.setKlant(this.klantLader.getKlant(factuur.getKlant().getId()));
-			this.persoonLader.getPersoon(factuur.getKlant().getId());
+			factuur.setContactPersoon(this.persoonLader.getPersoon(factuur.getContactPersoon().getId()));
 		}
 		return facturen;
 	}
