@@ -1,5 +1,6 @@
 package nl.hu.bep.group4.bifi.lader.implementations;
 
+import nl.hu.bep.group4.bifi.exceptions.GarbageDataException;
 import nl.hu.bep.group4.bifi.lader.MysqlLader;
 import nl.hu.bep.group4.bifi.model.Adres;
 import nl.hu.bep.group4.bifi.model.Klant;
@@ -16,61 +17,32 @@ public class MysqlLaderImpl implements MysqlLader {
 
     private Connection con = null;
 
-    public Connection connectDatabase() {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            con = DriverManager.getConnection(
-                    "jdbc:mysql://sql7.freemysqlhosting.net:3306/sql7292801", "sql7292801", "n2jfwIMeEa");
-
-        }catch(Exception e){
-            System.out.println(e);
-        }
-        return con;
-    }
-
-    public void getAllKlanten() throws SQLException {
-
-        connectDatabase();
-        Statement stmt = con.createStatement();
-
-        ResultSet rs=stmt.executeQuery("select * from Klant");
-        while(rs.next())
-            System.out.println(rs.getInt("KlantID") +  "\t" +
-                    rs.getString("Bedrijfsnaam") + "\t" +
-                    rs.getString("Rechtsvorm"));
-        con.close();
+    private Connection connectDatabase() throws ClassNotFoundException, SQLException {
+       Class.forName("com.mysql.cj.jdbc.Driver");
+       con = DriverManager.getConnection("jdbc:mysql://sql7.freemysqlhosting.net:3306/sql7292801", "sql7292801", "n2jfwIMeEa");
+       return con;
     }
 
 	@Override
-	public List<Adres> getAdres(int klantId) throws SQLException {
+	public List<Adres> getAdressen(int klantId) throws SQLException, ClassNotFoundException {
         connectDatabase();
         Statement stmt;
-        ResultSet rs= null;
+        ResultSet resultSet = null;
         String query = "select * from Adres where KlantID = " + klantId + "AND Type <> " + ADRESSTYPE;
         List<Adres> adressen = new ArrayList<>();
 
-        try {
-            stmt = con.createStatement();
-            rs = stmt.executeQuery(query);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        stmt = con.createStatement();
+        resultSet = stmt.executeQuery(query);
 
-        while(rs.next()) {
-            try {
-               String straat = rs.getString("Straat");
-               String huisnummer = rs.getString("huisnummer");
-               String postcode = rs.getString("postcode");
-               String plaats = rs.getString("plaats");
-               String BiC = rs.getString("BIC");
-//             String Type = rs.getString("Type");
+        while(resultSet.next()) {
+           String straat = resultSet.getString("Straat");
+           String huisnummer = resultSet.getString("huisnummer");
+           String postcode = resultSet.getString("postcode");
+           String plaats = resultSet.getString("plaats");
+           String BiC = resultSet.getString("BIC");
 
-                Adres adres = new Adres(straat,huisnummer,postcode,plaats,BiC);
-                System.out.println(straat + " " + huisnummer + " " + postcode + " " + plaats + " " + BiC);
-                adressen.add(adres);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            Adres adres = new Adres(straat,huisnummer,postcode,plaats,BiC);
+            adressen.add(adres);
         }
         con.close();
         return adressen;
@@ -78,116 +50,92 @@ public class MysqlLaderImpl implements MysqlLader {
     }
 
 	@Override
-	public Klant getKlant(int klantId) throws SQLException {
+	public Klant getKlant(int klantId) throws SQLException, ClassNotFoundException {
         connectDatabase();
         Statement stmt;
-        ResultSet rs= null;
+        ResultSet resultSet = null;
         Klant klant = null;
         String query = "select * from Klant where KlantID = " + klantId;
 
-        try {
-            stmt = con.createStatement();
-            rs = stmt.executeQuery(query);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        stmt = con.createStatement();
+        resultSet = stmt.executeQuery(query);
 
-        while(rs.next()) {
-                String bedrijfsnaam = rs.getString("Bedrijfsnaam");
-                String rechtsvorm = rs.getString("rechtsvorm");
-                String vAT = rs.getString("VAT");
-                String bankrekeningNummer = rs.getString("BankRek");
-                String giroNummer = rs.getString("Giro");
-                String biC = rs.getString("BiK");
+        while(resultSet.next()) {
+                String bedrijfsnaam = resultSet.getString("Bedrijfsnaam");
+                String rechtsvorm = resultSet.getString("rechtsvorm");
+                String vAT = resultSet.getString("VAT");
+                String bankrekeningNummer = resultSet.getString("BankRek");
+                String giroNummer = resultSet.getString("Giro");
+                String biC = resultSet.getString("BiK");
                 List<Persoon> contactPersonen = new ArrayList<>();
                 List<Adres> adres = new ArrayList<>();
                 Adres factuurAdres = null;
 
                 klant = new Klant(bedrijfsnaam,rechtsvorm,vAT,bankrekeningNummer,giroNummer,biC,contactPersonen,adres,factuurAdres);
-                System.out.println(bedrijfsnaam + " " + rechtsvorm + " " + vAT + " " + bankrekeningNummer + " " + giroNummer + " " + biC);
         }
         con.close();
         return klant;
 	}
 
-	// moet deze niet maar 1 persoon terug geven?
 	@Override
-	public List<Persoon> getPersoon(int klantId) throws SQLException {
+	public List<Persoon> getPersonen(int klantId) throws SQLException, ClassNotFoundException {
         connectDatabase();
         Statement stmt;
-        ResultSet rs= null;
+        ResultSet resultSet = null;
         String query = "select * from Persoon where KlantID = " + klantId;
         List<Persoon> personen = new ArrayList<>();
 
-        try {
-            stmt = con.createStatement();
-            rs = stmt.executeQuery(query);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        stmt = con.createStatement();
+        resultSet = stmt.executeQuery(query);
 
-        while(rs.next()) {
-            try {
-                String voornaam = rs.getString("Voornaam");
-                String tussenvoegsel = rs.getString("Tussenvoegsel");
-                String achternaam = rs.getString("Achternaam");
-                String telefoon = rs.getString("Telefoon");
-                String fax = rs.getString("Fax");
-                String geslacht = rs.getString("Geslacht");
+        while(resultSet.next()) {
+            String voornaam = resultSet.getString("Voornaam");
+            String tussenvoegsel = resultSet.getString("Tussenvoegsel");
+            String achternaam = resultSet.getString("Achternaam");
+            String telefoon = resultSet.getString("Telefoon");
+            String fax = resultSet.getString("Fax");
+            String geslacht = resultSet.getString("Geslacht");
 
-                Persoon.Geslacht convertedSex = Persoon.Geslacht.VROUW;
+            Persoon.Geslacht convertedSex = Persoon.Geslacht.VROUW;
 
-                if(("0").equals(geslacht) || ("m").equalsIgnoreCase(geslacht)) {
-                    convertedSex = Persoon.Geslacht.MAN;
-                }
-                
-                Persoon persoon = new Persoon(voornaam,achternaam,tussenvoegsel,telefoon,fax, convertedSex);
-                System.out.println(voornaam + " " + achternaam + " " + tussenvoegsel + " " + telefoon + " " + fax);
-                personen.add(persoon);
-            } catch (SQLException e) {
-                e.printStackTrace();
+            if(("0").equals(geslacht) || ("m").equalsIgnoreCase(geslacht)) {
+                convertedSex = Persoon.Geslacht.MAN;
             }
+            
+            Persoon persoon = new Persoon(voornaam,achternaam,tussenvoegsel,telefoon,fax, convertedSex);
+            personen.add(persoon);
         }
         con.close();
         return personen;
     }
 
     @Override
-    public Adres getFactuurAdres(int klantId) throws SQLException {
-        connectDatabase();
-
+    public Adres getFactuurAdres(int klantId) throws SQLException, ClassNotFoundException, GarbageDataException {
         connectDatabase();
         Statement stmt;
-        ResultSet rs = null;
+        ResultSet resultSet = null;
 
         String query = "select * from Adres where KlantID = " + klantId + "AND type = " + ADRESSTYPE;
 
         Adres factuurAdres = null;
 
-        ResultSet resultSet = null;
-
-        try {
-            stmt = con.createStatement();
-            rs = stmt.executeQuery(query);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        stmt = con.createStatement();
+        resultSet = stmt.executeQuery(query);
 
         if (resultSet.getFetchSize() > 1) {
-            //TODO Throw exception
+            throw new GarbageDataException("Meer dan 1 factuuradres voor klant "+klantId);
         }
 
         while(resultSet.next()) {
-            String straat = rs.getString("Straat");
-            String huisnummer = rs.getString("huisnummer");
-            String postcode = rs.getString("postcode");
-            String plaats = rs.getString("plaats");
-            String BiC = rs.getString("BIC");
+            String straat = resultSet.getString("Straat");
+            String huisnummer = resultSet.getString("huisnummer");
+            String postcode = resultSet.getString("postcode");
+            String plaats = resultSet.getString("plaats");
+            String BiC = resultSet.getString("BIC");
 
             factuurAdres = new Adres(straat,huisnummer,postcode,plaats,BiC);
         }
+        con.close();
         return factuurAdres;
     }
 }
-
-

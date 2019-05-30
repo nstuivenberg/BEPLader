@@ -20,7 +20,7 @@ public class AdresLaderImpl  implements AdresLader {
     }
 
 	@Override
-	public List<Adres> getAdres(int klantId) throws SQLException, IOException {
+	public List<Adres> getAdres(int klantId) throws SQLException, IOException, ClassNotFoundException {
 		ArrayList<String> adresSleutelsTeVindenInLegacy = new ArrayList<>();
 		List<Adres> resultaat = new ArrayList<>();
 		// Kan een Klant een klantId van 0 hebben?
@@ -28,7 +28,7 @@ public class AdresLaderImpl  implements AdresLader {
 		if (klantId == 0) {
 			return null;
 		}
-		List<Adres> mysqlAdressen = mysqlLader.getAdres(klantId);
+		List<Adres> mysqlAdressen = mysqlLader.getAdressen(klantId);
 		
 		/*
 		List<Adres> adres = null;

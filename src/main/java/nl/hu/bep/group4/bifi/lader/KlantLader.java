@@ -5,5 +5,5 @@ import java.sql.SQLException;
 import nl.hu.bep.group4.bifi.model.Klant;
 
 public interface KlantLader {
-	Klant getKlant(int klantId) throws SQLException, IOException;
+	Klant getKlant(int klantId) throws SQLException, IOException, ClassNotFoundException;
 }

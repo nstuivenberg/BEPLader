@@ -26,21 +26,9 @@ public class AdresLaderImplTest {
 				return null;
 			}
 		};
-		MysqlLader mysqlLader = new MysqlLader() {
-			@Override
-			public List<Persoon> getPersoon(int klantId) throws SQLException {
-				//
-				return null;
-			}
-			
+		MysqlLader mysqlLader = new MysqlLader() {			
 			@Override
 			public Klant getKlant(int klantId) {
-				//
-				return null;
-			}
-			
-			@Override
-			public List<Adres> getAdres(int klantId) throws SQLException {
 				//
 				return null;
 			}
@@ -49,12 +37,24 @@ public class AdresLaderImplTest {
 			public Adres getFactuurAdres(int klantId) throws SQLException {
 				return null;
 			}
+
+			@Override
+			public List<Adres> getAdressen(int klantId) throws SQLException, ClassNotFoundException {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public List<Persoon> getPersonen(int klantId) throws SQLException, ClassNotFoundException {
+				// TODO Auto-generated method stub
+				return null;
+			}
 		};
 		lader = new AdresLaderImpl(legacyJarLader, mysqlLader);
 	}
 	
 	@Test
-	public void testOntbrekendeKlant() throws SQLException, IOException {
+	public void testOntbrekendeKlant() throws SQLException, IOException, ClassNotFoundException {
 		assertNull(lader.getAdres(0));
 	}
 	
