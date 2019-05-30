@@ -133,9 +133,15 @@ public class MysqlLaderImpl implements MysqlLader {
                 String achternaam = rs.getString("Achternaam");
                 String telefoon = rs.getString("Telefoon");
                 String fax = rs.getString("Fax");
-//              String Geslacht = rs.getString("Geslacht");
+                String geslacht = rs.getString("Geslacht");
 
-                Persoon persoon = new Persoon(voornaam,achternaam,tussenvoegsel,telefoon,fax);
+                Persoon.Geslacht convertedSex = Persoon.Geslacht.VROUW;
+
+                if(("0").equals(geslacht) || ("m").equalsIgnoreCase(geslacht)) {
+                    convertedSex = Persoon.Geslacht.MAN;
+                }
+                
+                Persoon persoon = new Persoon(voornaam,achternaam,tussenvoegsel,telefoon,fax, convertedSex);
                 System.out.println(voornaam + " " + achternaam + " " + tussenvoegsel + " " + telefoon + " " + fax);
                 personen.add(persoon);
             } catch (SQLException e) {

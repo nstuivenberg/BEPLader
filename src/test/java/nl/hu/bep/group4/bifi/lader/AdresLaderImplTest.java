@@ -22,7 +22,7 @@ public class AdresLaderImplTest {
 		LegacyJarLader legacyJarLader = new LegacyJarLader() {
 			@Override
 			public Adres laadAdres(String sleutel) throws IOException {
-				//
+
 				return null;
 			}
 		};
@@ -42,6 +42,11 @@ public class AdresLaderImplTest {
 			@Override
 			public List<Adres> getAdres(int klantId) throws SQLException {
 				//
+				return null;
+			}
+
+			@Override
+			public Adres getFactuurAdres(int klantId) throws SQLException {
 				return null;
 			}
 		};
