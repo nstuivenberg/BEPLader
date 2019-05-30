@@ -11,6 +11,9 @@ import java.util.List;
 
 
 public class MysqlLaderImpl implements MysqlLader {
+
+    private static final String ADRESSTYPE = "F";
+
     private Connection con = null;
 
     public Connection connectDatabase() {
@@ -43,7 +46,7 @@ public class MysqlLaderImpl implements MysqlLader {
         connectDatabase();
         Statement stmt;
         ResultSet rs= null;
-        String query = "select * from Adres where KlantID = " + klantId;
+        String query = "select * from Adres where KlantID = " + klantId + "AND Type <> " + ADRESSTYPE;
         List<Adres> adressen = new ArrayList<>();
 
         try {
@@ -143,6 +146,42 @@ public class MysqlLaderImpl implements MysqlLader {
         return personen;
     }
 
+    @Override
+    public Adres getFactuurAdres(int klantId) throws SQLException {
+        connectDatabase();
+
+        connectDatabase();
+        Statement stmt;
+        ResultSet rs = null;
+
+        String query = "select * from Adres where KlantID = " + klantId + "AND type = " + ADRESSTYPE;
+
+        Adres factuurAdres = null;
+
+        ResultSet resultSet = null;
+
+        try {
+            stmt = con.createStatement();
+            rs = stmt.executeQuery(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        if (resultSet.getFetchSize() > 1) {
+            //TODO Throw exception
+        }
+
+        while(resultSet.next()) {
+            String straat = rs.getString("Straat");
+            String huisnummer = rs.getString("huisnummer");
+            String postcode = rs.getString("postcode");
+            String plaats = rs.getString("plaats");
+            String BiC = rs.getString("BIC");
+
+            factuurAdres = new Adres(straat,huisnummer,postcode,plaats,BiC);
+        }
+        return factuurAdres;
+    }
 }
 
 
