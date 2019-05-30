@@ -35,7 +35,6 @@ public class AdresLaderImplTest {
 		MysqlLader mysqlLader = new MysqlLader() {			
 			@Override
 			public Klant getKlant(int klantId) {
-				//
 				return null;
 			}
 
@@ -46,7 +45,7 @@ public class AdresLaderImplTest {
 
 			@Override
 			public List<Adres> getAdressen(int klantId) throws SQLException, ClassNotFoundException {
-				List<Adres> adressen = new ArrayList<>();
+				List<Adres> adressen = new ArrayList<Adres>();
 				switch(klantId) {
 					case 0:
 						return null;
@@ -67,7 +66,6 @@ public class AdresLaderImplTest {
 
 			@Override
 			public List<Persoon> getPersonen(int klantId) throws SQLException, ClassNotFoundException {
-				// TODO Auto-generated method stub
 				return null;
 			}
 		};

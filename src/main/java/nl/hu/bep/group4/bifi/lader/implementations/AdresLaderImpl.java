@@ -21,8 +21,8 @@ public class AdresLaderImpl  implements AdresLader {
 
 	@Override
 	public List<Adres> getAdressen(int klantId) throws SQLException, IOException, ClassNotFoundException {
-		ArrayList<String> adresSleutelsTeVindenInLegacy = new ArrayList<>();
-		List<Adres> resultaat = new ArrayList<>();
+		ArrayList<String> adresSleutelsTeVindenInLegacy = new ArrayList<String>();
+		List<Adres> resultaat = new ArrayList<Adres>();
 		// Kan een Klant een klantId van 0 hebben?
 		// Of wordt -1 gebruikt als Id van ontbrekende Klant?
 		if (klantId == 0) {
