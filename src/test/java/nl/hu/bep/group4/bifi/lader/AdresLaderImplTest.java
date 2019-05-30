@@ -45,7 +45,7 @@ public class AdresLaderImplTest {
 
 			@Override
 			public List<Adres> getAdressen(int klantId) throws SQLException, ClassNotFoundException {
-				List<Adres> adressen = new ArrayList<Adres>();
+				List<Adres> adressen = new ArrayList<>();
 				switch(klantId) {
 					case 0:
 						return null;
