@@ -30,7 +30,7 @@ public class AdresLaderImpl  implements AdresLader {
 	@Override
 	public List<Adres> getAdres(int klantId) throws SQLException, IOException {
 		ArrayList<String> adresSleutelsTeVindenInLegacy = new ArrayList<String>();
-		List<Adres> resultaat = new ArrayList<>();
+		List<Adres> resultaat = new ArrayList<Adres>();
 		// Kan een Klant een klantId van 0 hebben?
 		// Of wordt -1 gebruikt als Id van ontbrekende Klant?
 		if (klantId == 0) {
@@ -56,12 +56,11 @@ public class AdresLaderImpl  implements AdresLader {
 		
 		for (Adres adres : mysqlAdressen) {
 			String straat = adres.getStraat();
-			char eersteChar;
 			if (straat == null || straat.equals("")) {
 				//
 			}
 			else {
-				eersteChar = straat.charAt(0);
+				char eersteChar = straat.charAt(0);
 				if (eersteChar == '-') {
 					String sleutel = straat.substring(1);
 					adresSleutelsTeVindenInLegacy.add(sleutel);
