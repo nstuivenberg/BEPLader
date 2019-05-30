@@ -1,7 +1,10 @@
 package nl.hu.bep.group4.bifi.lader.implementations;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
+import nl.hu.bep.group4.bifi.exceptions.GarbageDataException;
 import nl.hu.bep.group4.bifi.interfaces.FactuurLader;
 import nl.hu.bep.group4.bifi.lader.KlantLader;
 import nl.hu.bep.group4.bifi.lader.MongoLader;
@@ -20,9 +23,13 @@ public class FactuurLaderImpl implements FactuurLader {
 	}
 
 	@Override
-	public List<Factuur> getFacturenVoorMaand(int maandNummer) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Factuur> getFacturenVoorMaand(int maandNummer) throws GarbageDataException, ClassNotFoundException, SQLException, IOException {
+		List<Factuur> facturen = this.mongoLader.getFacturenVoorMaand(maandNummer);
+		for(Factuur factuur : facturen) {
+			factuur.setKlant(this.klantLader.getKlant(factuur.getKlant().getId()));
+			factuur.setContactPersoon(this.persoonLader.getPersoon(factuur.getContactPersoon().getId()));
+		}
+		return facturen;
 	}
 
 }
