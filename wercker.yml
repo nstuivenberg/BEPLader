@@ -19,9 +19,6 @@ build:
       version: 3.5.2
 
 sonar:
-  # Steps make up the actions in your pipeline
-  # Read more about steps on our dev center:
-  # http://devcenter.wercker.com/docs/steps/index.html
   steps:
   # https://github.com/wercker/step-maven
   - wercker/maven:
