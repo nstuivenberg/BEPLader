@@ -120,7 +120,7 @@ public class MysqlLaderImpl implements MysqlLader {
         Statement stmt;
         ResultSet resultSet = null;
 
-        String query = "select * from Adres where KlantID = " + klantId + "AND type = " + ADRESFACTUURTYPE;
+        String query = "select * from Adres where KlantID = " + klantId + " AND type = '" + ADRESFACTUURTYPE + "'";
 
         Adres factuurAdres = null;
 

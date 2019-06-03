@@ -73,7 +73,7 @@ public class AdresLaderImpl  implements AdresLader {
 
 	    Adres factuurAdres = mysqlLader.getFactuurAdres(klantId);
 
-	    if(!("").equals(factuurAdres.getStraat()) && factuurAdres.getStraat().charAt(1) == ADRESSINDICATOR) {
+	    if(!("").equals(factuurAdres.getStraat()) && factuurAdres.getStraat().charAt(0) == ADRESSINDICATOR) {
 	        String legacyId = factuurAdres.getStraat().substring(1);
             return legacyJarLader.laadAdres(legacyId);
         }
