@@ -39,7 +39,7 @@ public class AdresLaderImpl  implements AdresLader {
 
 		List<Adres> mysqlAdressen = mysqlLader.getAdressen(klantId);
 		List<Adres> resultaat = new ArrayList<>();
-		List<String> AdresIdLegacy = new ArrayList<>();
+		List<String> adresIdLegacy = new ArrayList<>();
 
 		if (mysqlAdressen.isEmpty()) {
 			return resultaat;
@@ -51,7 +51,7 @@ public class AdresLaderImpl  implements AdresLader {
 				char firstChar = straat.charAt(0);
 				if (firstChar == ADRESSINDICATOR) {
 					String sleutel = straat.substring(1);
-					AdresIdLegacy.add(sleutel);
+					adresIdLegacy.add(sleutel);
 				}
 				else {
 					resultaat.add(adres);
@@ -59,8 +59,8 @@ public class AdresLaderImpl  implements AdresLader {
 			}
 		}
 		
-		if (!AdresIdLegacy.isEmpty()) {
-			for (String legacyKey : AdresIdLegacy) {
+		if (!adresIdLegacy.isEmpty()) {
+			for (String legacyKey : adresIdLegacy) {
 				Adres adres = legacyJarLader.laadAdres(legacyKey);
 				resultaat.add(adres);
 			}
@@ -73,7 +73,7 @@ public class AdresLaderImpl  implements AdresLader {
 
 	    Adres factuurAdres = mysqlLader.getFactuurAdres(klantId);
 
-	    if(!("").equals(factuurAdres.getStraat()) && factuurAdres.getStraat().charAt(1) == ADRESSINDICATOR) {
+	    if(!("").equals(factuurAdres.getStraat()) && factuurAdres.getStraat().charAt(0) == ADRESSINDICATOR) {
 	        String legacyId = factuurAdres.getStraat().substring(1);
             return legacyJarLader.laadAdres(legacyId);
         }
