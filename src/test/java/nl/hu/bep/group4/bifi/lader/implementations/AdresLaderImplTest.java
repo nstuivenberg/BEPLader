@@ -101,11 +101,4 @@ public class AdresLaderImplTest {
 		assertEquals(a.getPlaats(), "Rotterdam");
 		assertEquals(a.getBiC(), "testBIC1");
 	}
-
-	@Test
-	public void testAdresVanOngeldigeKlant() throws SQLException, IOException, ClassNotFoundException {
-		AdresLader lader = setup();
-		List<Adres> al = lader.getAdressen(4);
-		assertNull(al);
-	}
 }
