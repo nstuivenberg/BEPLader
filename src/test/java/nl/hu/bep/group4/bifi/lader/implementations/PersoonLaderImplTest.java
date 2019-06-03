@@ -13,7 +13,6 @@ import org.easymock.EasyMockSupport;
 import org.easymock.Mock;
 import org.easymock.TestSubject;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class PersoonLaderImplTest {
@@ -29,8 +28,8 @@ public class PersoonLaderImplTest {
     private PersoonLader persoonLader = new PersoonLaderImpl(mysqlLader);
 
 
-    //This is gonna be fucked in Wercker
-    @BeforeEach
+    //BeforeEach not working in Wercker. Shit tool
+    //@BeforeEach
     public void setup() {
         EasyMockSupport.injectMocks(this);
         a = new Persoon(1, "Nick", "Stuivenber", "", "", "", Persoon.Geslacht.MAN);
@@ -43,18 +42,7 @@ public class PersoonLaderImplTest {
 
     @Test
     public void testPersoonLaderGetPersoon() throws ClassNotFoundException, SQLException, GarbageDataException {
-        //List<Adres> adresList = new ArrayList<>();
-        //adresList.add(new Adres("A", "0125", "6211AA", "Mestreeg", "456"));
-        //adresList.add(new Adres("B", "0125", "6211AA", "Mestreeg", "456"));
-
-        //List<Persoon> persoonList = new ArrayList<>();
-        //persoonList.add(a);
-
-        //Klant klant = new Klant(1);
-        //klant.setBedrijfsnaam("Overtoom");
-
-        //expect(mysqlLader.getAdressen(1)).andReturn(adresList);
-        //expect(mysqlLader.getKlant(1)).andReturn(klant);
+        setup();
         expect(mysqlLader.getPersoon(1)).andReturn(a);
         replay(mysqlLader);
 
@@ -64,11 +52,10 @@ public class PersoonLaderImplTest {
 
     @Test
     public void testPersoonLaderGetPersonen() throws GarbageDataException, SQLException, ClassNotFoundException {
+        setup();
         expect(mysqlLader.getPersonen(1)).andReturn(persoonList);
         assertEquals(persoonList.size(), 2);
         assertEquals(persoonList.get(0), a);
         assertEquals(persoonList.get(1), b);
     }
-
-
 }
