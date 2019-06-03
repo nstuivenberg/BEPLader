@@ -67,6 +67,12 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>org.easymock</groupId>
+			<artifactId>easymock</artifactId>
+			<version>4.0.2</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>nl.hu.bep.group4</groupId>
 			<artifactId>legacy</artifactId>
 			<version>1.0.2</version>

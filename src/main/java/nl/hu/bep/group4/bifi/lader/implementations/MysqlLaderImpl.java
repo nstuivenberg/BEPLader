@@ -22,7 +22,7 @@ import java.util.Properties;
 
 public class MysqlLaderImpl implements MysqlLader {
 
-    private static final String ADRESSTYPE = "F";
+    private static final String ADRESFACTUURTYPE = "F";
 
     private Connection con = null;
 
@@ -47,8 +47,8 @@ public class MysqlLaderImpl implements MysqlLader {
     public List<Adres> getAdressen(int klantId) throws SQLException, ClassNotFoundException {
         connectToMySQLDatabase();
         Statement stmt;
-        ResultSet resultSet = null;
-        String query = "select * from Adres where KlantID = " + klantId + " AND Type <> '" + ADRESSTYPE + "'";
+        ResultSet resultSet;
+        String query = "select * from Adres where KlantID = " + klantId + " AND Type <> '" + ADRESFACTUURTYPE + "'";
         List<Adres> adressen = new ArrayList<>();
 
         stmt = con.createStatement();
@@ -136,7 +136,7 @@ public class MysqlLaderImpl implements MysqlLader {
         Statement stmt;
         ResultSet resultSet = null;
 
-        String query = "select * from Adres where KlantID = " + klantId + "AND type = " + ADRESSTYPE;
+        String query = "select * from Adres where KlantID = " + klantId + " AND type = '" + ADRESFACTUURTYPE + "'";
 
         Adres factuurAdres = null;
 
@@ -174,7 +174,7 @@ public class MysqlLaderImpl implements MysqlLader {
             throw new GarbageDataException("Meer dan 1 Persoon voor PersoonId" + persoonId);
         }
         while (resultSet.next()) {
-            Integer persoonsId = resultSet.getInt("PersoonID");
+            int persoonsId = resultSet.getInt("PersoonID");
             String voornaam = resultSet.getString("Voornaam");
             String tussenvoegsel = resultSet.getString("Tussenvoegsel");
             String achternaam = resultSet.getString("Achternaam");

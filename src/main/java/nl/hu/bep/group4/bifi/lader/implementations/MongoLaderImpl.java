@@ -5,6 +5,7 @@ import nl.hu.bep.group4.bifi.lader.MongoLader;
 import nl.hu.bep.group4.bifi.model.Factuur;
 import nl.hu.bep.group4.bifi.model.FactuurRegel;
 import nl.hu.bep.group4.bifi.model.FactuurRegel.BTWcode;
+import nl.hu.bep.group4.bifi.model.FactuurRegel.Unit;
 import nl.hu.bep.group4.bifi.model.Klant;
 import nl.hu.bep.group4.bifi.model.Persoon;
 
@@ -76,7 +77,14 @@ public class MongoLaderImpl implements MongoLader {
 					} else if(prijsObj instanceof Integer) {
 						factuurRegel.setTotaalprijsExBTW(((Integer)prijsObj).doubleValue());
 					} else {
-						throw new GarbageDataException("totalPrice heeft als type "+prijsObj.getClass().getName());
+						throw new GarbageDataException("TotalPrice heeft als type "+prijsObj.getClass().getName());
+					}
+					
+					String unit = line.getString("unit").toLowerCase();
+					if(unit.contentEquals("kg")) {
+						factuurRegel.setUnit(Unit.KILOGRAM);
+					} else {
+						throw new GarbageDataException(unit + " is geen bestaande unit");
 					}
 					
 					String btwCode = line.getString("btwCode").toLowerCase();

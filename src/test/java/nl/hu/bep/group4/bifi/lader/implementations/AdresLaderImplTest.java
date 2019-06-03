@@ -1,6 +1,9 @@
-package nl.hu.bep.group4.bifi.lader;
+package nl.hu.bep.group4.bifi.lader.implementations;
 
 import java.util.ArrayList;
+import nl.hu.bep.group4.bifi.lader.AdresLader;
+import nl.hu.bep.group4.bifi.lader.LegacyJarLader;
+import nl.hu.bep.group4.bifi.lader.MysqlLader;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -32,7 +35,7 @@ public class AdresLaderImplTest {
 				return adres;
 			}
 		};
-		MysqlLader mysqlLader = new MysqlLader() {			
+		MysqlLader mysqlLader = new MysqlLader() {
 			@Override
 			public Klant getKlant(int klantId) {
 				return null;
@@ -48,7 +51,7 @@ public class AdresLaderImplTest {
 				List<Adres> adressen = new ArrayList<>();
 				switch(klantId) {
 					case 0:
-						return null;
+						return adressen;
 					case 1:
 						adressen.add(new Adres("Steenweg","59","3511JN","Utrecht","DABAIE2D"));
 						adressen.add(new Adres("Steenweg","59","3511JN","Utrecht","DABAIE2D"));
@@ -76,13 +79,6 @@ public class AdresLaderImplTest {
 		};
 		return new AdresLaderImpl(legacyJarLader, mysqlLader);
 	}
-	
-	@Test
-	public void testOntbrekendeKlant() throws SQLException, IOException, ClassNotFoundException {
-		AdresLader lader = setup();
-		List<Adres> al = lader.getAdressen(0);
-		assertNull(al);
-	}
 
 	@Test
 	public void testAdresUitMysqlLader() throws SQLException, IOException, ClassNotFoundException {
@@ -104,12 +100,5 @@ public class AdresLaderImplTest {
 		assertEquals(a.getPostcode(), "1901CD");
 		assertEquals(a.getPlaats(), "Rotterdam");
 		assertEquals(a.getBiC(), "testBIC1");
-	}
-
-	@Test
-	public void testAdresVanOngeldigeKlant() throws SQLException, IOException, ClassNotFoundException {
-		AdresLader lader = setup();
-		List<Adres> al = lader.getAdressen(4);
-		assertNull(al);
 	}
 }
