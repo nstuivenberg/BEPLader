@@ -23,7 +23,7 @@ public class AdresLaderImplTest {
 	private AdresLader setup() {
 		LegacyJarLader legacyJarLader = new LegacyJarLader() {
 			@Override
-			public Adres laadAdres(String sleutel) throws IOException {
+			public Adres laadAdres(String sleutel) {
 				Adres adres;
 				switch(sleutel) {
 					case "MOATA":
@@ -81,7 +81,7 @@ public class AdresLaderImplTest {
 	}
 
 	@Test
-	public void testAdresUitMysqlLader() throws SQLException, IOException, ClassNotFoundException {
+	void testAdresUitMysqlLader() throws SQLException, IOException, ClassNotFoundException {
 		AdresLader lader = setup();
 		Adres a = lader.getAdressen(1).get(0);
 		assertEquals(a.getStraat(), "Steenweg");
@@ -92,7 +92,7 @@ public class AdresLaderImplTest {
 	}
 	
 	@Test
-	public void testAdresUitLegacyJarLader() throws SQLException, IOException, ClassNotFoundException {
+	void testAdresUitLegacyJarLader() throws SQLException, IOException, ClassNotFoundException {
 		AdresLader lader = setup();
 		Adres a = lader.getAdressen(2).get(1);
 		assertEquals(a.getStraat(), "Ajax");

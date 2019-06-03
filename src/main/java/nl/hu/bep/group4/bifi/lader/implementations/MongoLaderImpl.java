@@ -23,17 +23,18 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
 public class MongoLaderImpl implements MongoLader {
-	MongoDatabase db = null;
 
 	public MongoCollection<Document> connectToMongoDB() {
-		MongoCollection<Document> BEPBifi = null;
+        MongoDatabase db = null;
+		MongoCollection<Document> bEPBifi = null;
 		String database = "BEPBifi";
 		
 		MongoClientURI uri = new MongoClientURI("mongodb+srv://dbUser:112112@cluster0-vk3z3.mongodb.net/test?retryWrites=true");
 		MongoClient mongoClient = new MongoClient(uri);
 		db = mongoClient.getDatabase(database);
-		BEPBifi = db.getCollection("BEPBifi");
-		return BEPBifi;
+		bEPBifi = db.getCollection("BEPBifi");
+
+		return bEPBifi;
 	}
 
 	/**
@@ -77,7 +78,7 @@ public class MongoLaderImpl implements MongoLader {
 					} else if(prijsObj instanceof Integer) {
 						factuurRegel.setTotaalprijsExBTW(((Integer)prijsObj).doubleValue());
 					} else {
-						throw new GarbageDataException("TotalPrice heeft als type "+prijsObj.getClass().getName());
+						throw new GarbageDataException("TotalPrice heeft als type " + prijsObj.getClass().getName());
 					}
 					
 					String unit = line.getString("unit").toLowerCase();
@@ -111,9 +112,7 @@ public class MongoLaderImpl implements MongoLader {
 			}
 		}
 		for(Factuur f : facturen) {
-			System.out.println(f.toString());
 		}
-		System.out.println("End of getFacturenVoorMaand()");
 		return facturen;	
 	}
 	

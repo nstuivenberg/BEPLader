@@ -25,7 +25,8 @@ public class AdresLaderImpl  implements AdresLader {
 	/**
 	 * Returns a list with Adres-objects found in the database with the given klantId.
      *
-     * If an adress starting with a '-' is found in the SQL database, the script will then read the key from the
+     * <p>
+     * If an Adres.getStraat() starting with a '-' is found in the SQL database, the script will then read the key from the
      * SQL-result and search for the Adres-object in the LegacyJar.
      *
 	 * @param klantId primary key of Klant in database

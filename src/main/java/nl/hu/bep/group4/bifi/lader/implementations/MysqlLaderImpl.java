@@ -21,10 +21,9 @@ public class MysqlLaderImpl implements MysqlLader {
 
     private Connection con = null;
 
-    private Connection connectDatabase() throws ClassNotFoundException, SQLException {
+    private void connectDatabase() throws ClassNotFoundException, SQLException {
         Class.forName("com.mysql.cj.jdbc.Driver");
         con = DriverManager.getConnection("jdbc:mysql://sql7.freemysqlhosting.net:3306/sql7292801", "sql7292801", "n2jfwIMeEa");
-        return con;
     }
 
     @Override
@@ -43,9 +42,9 @@ public class MysqlLaderImpl implements MysqlLader {
             String huisnummer = resultSet.getString("huisnummer");
             String postcode = resultSet.getString("postcode");
             String plaats = resultSet.getString("plaats");
-            String BiC = resultSet.getString("BIC");
+            String bIC = resultSet.getString("BIC");
 
-            Adres adres = new Adres(straat, huisnummer, postcode, plaats, BiC);
+            Adres adres = new Adres(straat, huisnummer, postcode, plaats, bIC);
             adressen.add(adres);
         }
         con.close();
