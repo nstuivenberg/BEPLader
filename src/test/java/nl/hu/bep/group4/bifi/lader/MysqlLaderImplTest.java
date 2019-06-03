@@ -5,7 +5,14 @@ import nl.hu.bep.group4.bifi.lader.implementations.MysqlLaderImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.SQLException;
+import java.util.Properties;
+
+import static java.lang.System.getProperty;
 
 class getKlantMysqlLaderImplTest {
 

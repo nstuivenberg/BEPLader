@@ -1,6 +1,10 @@
 package nl.hu.bep.group4.bifi.lader.implementations;
 
 import nl.hu.bep.group4.bifi.exceptions.GarbageDataException;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -13,6 +17,7 @@ import nl.hu.bep.group4.bifi.model.Persoon;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 
 public class MysqlLaderImpl implements MysqlLader {
@@ -21,15 +26,26 @@ public class MysqlLaderImpl implements MysqlLader {
 
     private Connection con = null;
 
-    private Connection connectDatabase() throws ClassNotFoundException, SQLException {
+
+    private Connection connectToMySQLDatabase() throws ClassNotFoundException, SQLException {
         Class.forName("com.mysql.cj.jdbc.Driver");
-        con = DriverManager.getConnection("jdbc:mysql://sql7.freemysqlhosting.net:3306/sql7292801", "sql7292801", "n2jfwIMeEa");
+        Properties props = new Properties();
+        InputStream input = null;
+        try {
+            props.load(input = new FileInputStream("src/config/config.properties"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String url = props.getProperty("MYSQLUrl");
+        String username =  props.getProperty("MySQLUsername");
+        String password =  props.getProperty("MySQLPassword");
+        con = DriverManager.getConnection(url,username,password);
         return con;
     }
 
     @Override
     public List<Adres> getAdressen(int klantId) throws SQLException, ClassNotFoundException {
-        connectDatabase();
+        connectToMySQLDatabase();
         Statement stmt;
         ResultSet resultSet = null;
         String query = "select * from Adres where KlantID = " + klantId + " AND Type <> '" + ADRESSTYPE + "'";
@@ -55,7 +71,7 @@ public class MysqlLaderImpl implements MysqlLader {
 
     @Override
     public Klant getKlant(int klantId) throws SQLException, ClassNotFoundException {
-        connectDatabase();
+        connectToMySQLDatabase();
         Statement stmt;
         ResultSet resultSet = null;
         Klant klant = null;
@@ -83,7 +99,7 @@ public class MysqlLaderImpl implements MysqlLader {
 
     @Override
     public List<Persoon> getPersonen(int klantId) throws SQLException, ClassNotFoundException {
-        connectDatabase();
+        connectToMySQLDatabase();
         Statement stmt;
         ResultSet resultSet = null;
         String query = "select * from Persoon where KlantID = " + klantId;
@@ -116,7 +132,7 @@ public class MysqlLaderImpl implements MysqlLader {
 
     @Override
     public Adres getFactuurAdres(int klantId) throws SQLException, ClassNotFoundException, GarbageDataException {
-        connectDatabase();
+        connectToMySQLDatabase();
         Statement stmt;
         ResultSet resultSet = null;
 
@@ -146,7 +162,7 @@ public class MysqlLaderImpl implements MysqlLader {
 
     @Override
     public Persoon getPersoon(int persoonId) throws SQLException, ClassNotFoundException, GarbageDataException {
-        connectDatabase();
+        connectToMySQLDatabase();
         Statement stmt;
         ResultSet resultSet = null;
         String query = "select * from Persoon where PersoonID = " + persoonId;
