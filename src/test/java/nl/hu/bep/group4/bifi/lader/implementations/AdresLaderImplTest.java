@@ -112,21 +112,21 @@ public class AdresLaderImplTest {
 	public void testAdresUitMysqlLader() throws SQLException, IOException, ClassNotFoundException {
 		AdresLader lader = setup();
 		Adres a = lader.getAdressen(1).get(0);
-		assertEquals(a.getStraat(), "Steenweg");
-		assertEquals(a.getHuisnummer(), "59");
-		assertEquals(a.getPostcode(), "3511JN");
-		assertEquals(a.getPlaats(), "Utrecht");
-		assertEquals(a.getBiC(), "DABAIE2D");
+		assertEquals("Steenweg", a.getStraat());
+		assertEquals("59", a.getHuisnummer());
+		assertEquals("3511JN", a.getPostcode());
+		assertEquals("Utrecht", a.getPlaats());
+		assertEquals("DABAIE2D", a.getBiC());
 	}
 	
 	@Test
 	public void testAdresUitLegacyJarLader() throws SQLException, IOException, ClassNotFoundException {
 		AdresLader lader = setup();
 		Adres a = lader.getAdressen(2).get(1);
-		assertEquals(a.getStraat(), "Ajax");
-		assertEquals(a.getHuisnummer(), "5");
-		assertEquals(a.getPostcode(), "1901CD");
-		assertEquals(a.getPlaats(), "Rotterdam");
+		assertEquals("Ajax", a.getStraat());
+		assertEquals("5", a.getHuisnummer());
+		assertEquals("1901CD", a.getPostcode());
+		assertEquals("Rotterdam", a.getPlaats());
 		assertEquals(a.getBiC(), "testBIC1");
 	}
 	
@@ -148,32 +148,32 @@ public class AdresLaderImplTest {
 	public void testFactuurAdresUitMysqlLader() throws ClassNotFoundException, GarbageDataException, SQLException, IOException {
 		AdresLader lader = setup();
 		Adres a = lader.getFactuurAdres(1);
-		assertEquals(a.getStraat(), "Steenweg");
-		assertEquals(a.getHuisnummer(), "59");
-		assertEquals(a.getPostcode(), "3511JN");
-		assertEquals(a.getPlaats(), "Utrecht");
-		assertEquals(a.getBiC(), "DABAIE2D");
+		assertEquals("Steenweg", a.getStraat());
+		assertEquals("59", a.getHuisnummer());
+		assertEquals("3511JN", a.getPostcode());
+		assertEquals("Utrecht", a.getPlaats());
+		assertEquals("DABAIE2D", a.getBiC());
 	}
 	
 	@Test
 	public void testFactuurAdresUitLegacyJarLader() throws ClassNotFoundException, GarbageDataException, SQLException, IOException {
 		AdresLader lader = setup();
 		Adres a = lader.getFactuurAdres(2);
-		assertEquals(a.getStraat(), "Ajax");
-		assertEquals(a.getHuisnummer(), "5");
-		assertEquals(a.getPostcode(), "1901CD");
-		assertEquals(a.getPlaats(), "Rotterdam");
-		assertEquals(a.getBiC(), "testBIC1");
+		assertEquals("Ajax", a.getStraat());
+		assertEquals("5", a.getHuisnummer());
+		assertEquals("1901CD", a.getPostcode());
+		assertEquals("Rotterdam", a.getPlaats());
+		assertEquals("testBIC1", a.getBiC());
 	}
 	
 	@Test
 	public void testFactuurAdresZonderStraat() throws ClassNotFoundException, GarbageDataException, SQLException, IOException {
 		AdresLader lader = setup();
 		Adres a = lader.getFactuurAdres(3);
-		assertEquals(a.getStraat(), "");
-		assertEquals(a.getHuisnummer(), "");
-		assertEquals(a.getPostcode(), "");
-		assertEquals(a.getPlaats(), "");
-		assertEquals(a.getBiC(), "");
+		assertEquals("", a.getStraat());
+		assertEquals("", a.getHuisnummer());
+		assertEquals("", a.getPostcode());
+		assertEquals("", a.getPlaats());
+		assertEquals("", a.getBiC());
 	}
 }
