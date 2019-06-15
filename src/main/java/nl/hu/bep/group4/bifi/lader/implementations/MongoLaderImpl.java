@@ -26,7 +26,6 @@ import com.mongodb.client.MongoDatabase;
 public class MongoLaderImpl implements MongoLader {
 	MongoDatabase db = null;
 	Factuur factuur = null;
-
 	/**
 	 *\
 	 * Mongo deals with errors. Connection does not have to be closed.
@@ -34,15 +33,15 @@ public class MongoLaderImpl implements MongoLader {
 	 */
 	@SuppressWarnings("squid:S2095")
 	public MongoCollection<Document> connectToMongoDB() {
-		MongoCollection<Document> BEPBifi = null;
+		MongoCollection<Document> mongoCollection = null;
 		String database = "BEPBifi";
 
 		MongoClientURI uri = new MongoClientURI("mongodb+srv://dbUser:112112@cluster0-vk3z3.mongodb.net/test?retryWrites=true");
 		MongoClient mongoClient = new MongoClient(uri);
 		 db = mongoClient.getDatabase(database);
-		 BEPBifi = db.getCollection("BEPBifi");
+		 mongoCollection = db.getCollection("BEPBifi");
 
-		return BEPBifi;
+		return mongoCollection;
 	}
 
 	/**
@@ -52,7 +51,7 @@ public class MongoLaderImpl implements MongoLader {
 	public List<Factuur> getFacturenVoorMaand(int maandNummer) throws GarbageDataException {
 		
 		List<Factuur> facturen = new ArrayList<>();
-		
+
 		MongoCollection<Document> collection = connectToMongoDB();
 		Iterator<Document> it = collection.find().iterator();
 		while(it.hasNext()) {
@@ -62,17 +61,16 @@ public class MongoLaderImpl implements MongoLader {
 			Date date = factuurVanMongo.getDate("date");
 			Calendar factuurDate = Calendar.getInstance();
 			factuurDate.setTime(date);
-
 			if (factuurDate.get(Calendar.MONTH) == maandNummer) {
 				setFactuurSettings(date, factuurVanMongo);
 				fillFacturenList(facturen, factuurVanMongo);
-
 			}
 		}
 		return facturen;	
 	}
 
 	private ArrayList<Factuur> fillFacturenList(List<Factuur> facturen, Document factuurVanMongo) throws GarbageDataException {
+
 		List<FactuurRegel> factuurRegels = new ArrayList<>();
 		List<Document> linesOfFactuur = factuurVanMongo.getList("invoiceLines", Document.class);
 		for(Document line : linesOfFactuur) {
@@ -119,8 +117,9 @@ public class MongoLaderImpl implements MongoLader {
 		facturen.add(factuur);
 		return (ArrayList<Factuur>) facturen;
 	}
-
+  
 	private void setFactuurSettings(Date date, Document factuurVanMongo) {
+
 		Instant instant = date.toInstant();
 		this.factuur = new Factuur();
 		factuur.setDatumtijd(instant.toString());

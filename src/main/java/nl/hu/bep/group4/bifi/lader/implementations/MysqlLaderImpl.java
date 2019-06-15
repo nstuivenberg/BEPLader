@@ -3,9 +3,7 @@ package nl.hu.bep.group4.bifi.lader.implementations;
 import nl.hu.bep.group4.bifi.exceptions.GarbageDataException;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -25,6 +23,7 @@ import java.util.Properties;
 public class MysqlLaderImpl implements MysqlLader {
 
     private static final String ADRESFACTUURTYPE = "F";
+    Persoon persoon = null;
 
     private Connection con = null;
     private String username;
@@ -32,23 +31,22 @@ public class MysqlLaderImpl implements MysqlLader {
     private String url;
 
 
-    private Connection connectToMySQLDatabase() throws ClassNotFoundException, SQLException, FileNotFoundException, IOException {
+    private Connection connectToMySQLDatabase() throws ClassNotFoundException, SQLException, IOException {
         Class.forName("com.mysql.cj.jdbc.Driver");
         setConfigVariables();
         con = DriverManager.getConnection(url, username, password);
         return con;
     }
 
-    private void setConfigVariables() throws FileNotFoundException, IOException {
+    private void setConfigVariables() throws IOException {
         if (System.getenv("BEP_MySQLUsername") != null) {
             this.username = System.getenv("BEP_MySQLUsername");
             this.password = System.getenv("BEP_MySQLPassword");
             this.url = System.getenv("BEP_MYSQLUrl");
         } else {
             Properties props = new Properties();
-            InputStream input = null;
-
-            props.load(input = new FileInputStream("src/config/config.properties"));
+            props.load(new FileInputStream("src/config/config.properties"));
+            
             this.url = props.getProperty("MYSQLUrl");
             this.username = props.getProperty("MySQLUsername");
             this.password = props.getProperty("MySQLPassword");
@@ -56,7 +54,7 @@ public class MysqlLaderImpl implements MysqlLader {
     }
 
     @Override
-    public List<Adres> getAdressen(int klantId) throws SQLException, ClassNotFoundException, FileNotFoundException, IOException {
+    public List<Adres> getAdressen(int klantId) throws SQLException, ClassNotFoundException, IOException {
         connectToMySQLDatabase();
         Statement stmt;
         ResultSet resultSet;
@@ -71,9 +69,9 @@ public class MysqlLaderImpl implements MysqlLader {
             String huisnummer = resultSet.getString("huisnummer");
             String postcode = resultSet.getString("postcode");
             String plaats = resultSet.getString("plaats");
-            String BiC = resultSet.getString("BIC");
+            String biC = resultSet.getString("BIC");
 
-            Adres adres = new Adres(straat, huisnummer, postcode, plaats, BiC);
+            Adres adres = new Adres(straat, huisnummer, postcode, plaats, biC);
             adressen.add(adres);
         }
         con.close();
@@ -82,7 +80,7 @@ public class MysqlLaderImpl implements MysqlLader {
     }
 
     @Override
-    public Klant getKlant(int klantId) throws SQLException, ClassNotFoundException, FileNotFoundException, IOException {
+    public Klant getKlant(int klantId) throws SQLException, ClassNotFoundException, IOException {
         connectToMySQLDatabase();
         Statement stmt;
         ResultSet resultSet = null;
@@ -110,7 +108,7 @@ public class MysqlLaderImpl implements MysqlLader {
     }
 
     @Override
-    public List<Persoon> getPersonen(int klantId) throws SQLException, ClassNotFoundException, FileNotFoundException, IOException {
+    public List<Persoon> getPersonen(int klantId) throws SQLException, ClassNotFoundException, IOException {
         connectToMySQLDatabase();
         Statement stmt;
         ResultSet resultSet = null;
@@ -121,21 +119,8 @@ public class MysqlLaderImpl implements MysqlLader {
         resultSet = stmt.executeQuery(query);
 
         while (resultSet.next()) {
-            Integer persoonId = resultSet.getInt("PersoonID");
-            String voornaam = resultSet.getString("Voornaam");
-            String tussenvoegsel = resultSet.getString("Tussenvoegsel");
-            String achternaam = resultSet.getString("Achternaam");
-            String telefoon = resultSet.getString("Telefoon");
-            String fax = resultSet.getString("Fax");
-            String geslacht = resultSet.getString("Geslacht");
+            persoon = createPersoon(resultSet);
 
-            Persoon.Geslacht convertedSex = Persoon.Geslacht.VROUW;
-
-            if (("0").equals(geslacht) || ("m").equalsIgnoreCase(geslacht)) {
-                convertedSex = Persoon.Geslacht.MAN;
-            }
-
-            Persoon persoon = new Persoon(persoonId, voornaam, achternaam, tussenvoegsel, telefoon, fax, convertedSex);
             personen.add(persoon);
         }
         con.close();
@@ -143,7 +128,7 @@ public class MysqlLaderImpl implements MysqlLader {
     }
 
     @Override
-    public Adres getFactuurAdres(int klantId) throws SQLException, ClassNotFoundException, GarbageDataException, FileNotFoundException, IOException {
+    public Adres getFactuurAdres(int klantId) throws SQLException, ClassNotFoundException, GarbageDataException, IOException {
         connectToMySQLDatabase();
         Statement stmt;
         ResultSet resultSet = null;
@@ -164,16 +149,16 @@ public class MysqlLaderImpl implements MysqlLader {
             String huisnummer = resultSet.getString("huisnummer");
             String postcode = resultSet.getString("postcode");
             String plaats = resultSet.getString("plaats");
-            String BiC = resultSet.getString("BIC");
+            String biC = resultSet.getString("BIC");
 
-            factuurAdres = new Adres(straat, huisnummer, postcode, plaats, BiC);
+            factuurAdres = new Adres(straat, huisnummer, postcode, plaats, biC);
         }
         con.close();
         return factuurAdres;
     }
 
     @Override
-    public Persoon getPersoon(int persoonId) throws SQLException, ClassNotFoundException, GarbageDataException, FileNotFoundException, IOException {
+    public Persoon getPersoon(int persoonId) throws SQLException, ClassNotFoundException, GarbageDataException, IOException {
         connectToMySQLDatabase();
         Statement stmt;
         ResultSet resultSet = null;
@@ -181,26 +166,31 @@ public class MysqlLaderImpl implements MysqlLader {
 
         stmt = con.createStatement();
         resultSet = stmt.executeQuery(query);
-        Persoon persoon = null;
         if (resultSet.getFetchSize() > 1) {
             throw new GarbageDataException("Meer dan 1 Persoon voor PersoonId" + persoonId);
         }
         while (resultSet.next()) {
-            int persoonsId = resultSet.getInt("PersoonID");
-            String voornaam = resultSet.getString("Voornaam");
-            String tussenvoegsel = resultSet.getString("Tussenvoegsel");
-            String achternaam = resultSet.getString("Achternaam");
-            String telefoon = resultSet.getString("Telefoon");
-            String fax = resultSet.getString("Fax");
-            String geslacht = resultSet.getString("Geslacht");
+            persoon = createPersoon(resultSet);
 
-            Persoon.Geslacht convertedSex = Persoon.Geslacht.VROUW;
-
-            if (("0").equals(geslacht) || ("m").equalsIgnoreCase(geslacht)) {
-                convertedSex = Persoon.Geslacht.MAN;
-            }
-            persoon = new Persoon(persoonsId, voornaam, achternaam, tussenvoegsel, telefoon, fax, convertedSex);
         }
+        return persoon;
+    }
+
+    private Persoon createPersoon(ResultSet resultSet) throws SQLException {
+        int persoonsId = resultSet.getInt("PersoonID");
+        String voornaam = resultSet.getString("Voornaam");
+        String tussenvoegsel = resultSet.getString("Tussenvoegsel");
+        String achternaam = resultSet.getString("Achternaam");
+        String telefoon = resultSet.getString("Telefoon");
+        String fax = resultSet.getString("Fax");
+        String geslacht = resultSet.getString("Geslacht");
+
+        Persoon.Geslacht convertedSex = Persoon.Geslacht.VROUW;
+
+        if (("0").equals(geslacht) || ("m").equalsIgnoreCase(geslacht)) {
+            convertedSex = Persoon.Geslacht.MAN;
+        }
+        persoon = new Persoon(persoonsId, voornaam, achternaam, tussenvoegsel, telefoon, fax, convertedSex);
         return persoon;
     }
 }
