@@ -21,20 +21,20 @@ import java.util.Properties;
 
 
 public class MysqlLaderImpl implements MysqlLader {
-
     private static final String ADRESFACTUURTYPE = "F";
-    Persoon persoon = null;
-
-    private Connection con = null;
     private String username;
     private String password;
     private String url;
+    private Connection con = null;
+    private Statement stmt = null;
+    private ResultSet rs = null;
 
-    private Connection connectToMySQLDatabase() throws ClassNotFoundException, SQLException, IOException {
+    private void initMysqlDatabaseConnection() throws ClassNotFoundException, SQLException, IOException {
         Class.forName("com.mysql.cj.jdbc.Driver");
         setConfigVariables();
         con = DriverManager.getConnection(url, username, password);
-        return con;
+        stmt = con.createStatement();
+        rs = null;
     }
 
     private void setConfigVariables() throws IOException {
@@ -54,22 +54,19 @@ public class MysqlLaderImpl implements MysqlLader {
 
     @Override
     public List<Adres> getAdressen(int klantId) throws SQLException, ClassNotFoundException, IOException {
-        connectToMySQLDatabase();
-        Statement stmt;
-        ResultSet resultSet;
+        initMysqlDatabaseConnection();
         List<Adres> adressen = new ArrayList<>();
         
         try {
-        	stmt = con.createStatement();
             String query = "select * from Adres where KlantID = " + klantId + " AND Type <> '" + ADRESFACTUURTYPE + "'";
-            resultSet = stmt.executeQuery(query);
+            rs = stmt.executeQuery(query);
 
-            while (resultSet.next()) {
-                String straat = resultSet.getString("Straat");
-                String huisnummer = resultSet.getString("huisnummer");
-                String postcode = resultSet.getString("postcode");
-                String plaats = resultSet.getString("plaats");
-                String biC = resultSet.getString("BIC");
+            while (rs.next()) {
+                String straat = rs.getString("Straat");
+                String huisnummer = rs.getString("huisnummer");
+                String postcode = rs.getString("postcode");
+                String plaats = rs.getString("plaats");
+                String biC = rs.getString("BIC");
                 Adres adres = new Adres(straat, huisnummer, postcode, plaats, biC);
                 adressen.add(adres);
             }
@@ -78,32 +75,29 @@ public class MysqlLaderImpl implements MysqlLader {
         	throw e;
         }
         finally {
-        	if (con != null) {
-                con.close();
-        	}
+        	rs.close();
+        	stmt.close();
+            con.close();
         }
         return adressen;
     }
 
     @Override
     public Klant getKlant(int klantId) throws SQLException, ClassNotFoundException, IOException {
-        connectToMySQLDatabase();
-        Statement stmt;
-        ResultSet resultSet = null;
+        initMysqlDatabaseConnection();
         Klant klant = null;
         
         try {
-        	stmt = con.createStatement();
         	String query = "select * from Klant where KlantID = " + klantId;
-        	resultSet = stmt.executeQuery(query);
+        	rs = stmt.executeQuery(query);
         	
-        	while (resultSet.next()) {
-                String bedrijfsnaam = resultSet.getString("Bedrijfsnaam");
-                String rechtsvorm = resultSet.getString("rechtsvorm");
-                String vAT = resultSet.getString("VAT");
-                String bankrekeningNummer = resultSet.getString("BankRek");
-                String giroNummer = resultSet.getString("Giro");
-                String biC = resultSet.getString("BiK");
+        	while (rs.next()) {
+                String bedrijfsnaam = rs.getString("Bedrijfsnaam");
+                String rechtsvorm = rs.getString("rechtsvorm");
+                String vAT = rs.getString("VAT");
+                String bankrekeningNummer = rs.getString("BankRek");
+                String giroNummer = rs.getString("Giro");
+                String biC = rs.getString("BiK");
                 List<Persoon> contactPersonen = new ArrayList<>();
                 List<Adres> adres = new ArrayList<>();
                 Adres factuurAdres = null;
@@ -114,33 +108,30 @@ public class MysqlLaderImpl implements MysqlLader {
         	throw e;
         }
         finally {
-        	if (con != null) {
-                con.close();
-        	}
+        	rs.close();
+        	stmt.close();
+            con.close();
         }
         return klant;
     }
 
     @Override
     public List<Persoon> getPersonen(int klantId) throws SQLException, ClassNotFoundException, IOException {
-        connectToMySQLDatabase();
-        Statement stmt;
-        ResultSet resultSet = null;
+        initMysqlDatabaseConnection();
         List<Persoon> personen = new ArrayList<>();
 
         try {
-        	stmt = con.createStatement();
             String query = "select * from Persoon where KlantID = " + klantId;
-            resultSet = stmt.executeQuery(query);
+            rs = stmt.executeQuery(query);
             
-            while (resultSet.next()) {
-                int persoonsId = resultSet.getInt("PersoonID");
-                String voornaam = resultSet.getString("Voornaam");
-                String tussenvoegsel = resultSet.getString("Tussenvoegsel");
-                String achternaam = resultSet.getString("Achternaam");
-                String telefoon = resultSet.getString("Telefoon");
-                String fax = resultSet.getString("Fax");
-                String geslacht = resultSet.getString("Geslacht");
+            while (rs.next()) {
+                int persoonsId = rs.getInt("PersoonID");
+                String voornaam = rs.getString("Voornaam");
+                String tussenvoegsel = rs.getString("Tussenvoegsel");
+                String achternaam = rs.getString("Achternaam");
+                String telefoon = rs.getString("Telefoon");
+                String fax = rs.getString("Fax");
+                String geslacht = rs.getString("Geslacht");
                 Persoon.Geslacht convertedSex = Persoon.Geslacht.VROUW;
 
                 if (("0").equals(geslacht) || ("m").equalsIgnoreCase(geslacht)) {
@@ -155,35 +146,32 @@ public class MysqlLaderImpl implements MysqlLader {
         	throw e;
         }
         finally {
-        	if (con != null) {
-                con.close();
-        	}
+        	rs.close();
+        	stmt.close();
+            con.close();
         }
         return personen;
     }
 
     @Override
     public Adres getFactuurAdres(int klantId) throws SQLException, ClassNotFoundException, GarbageDataException, IOException {
-        connectToMySQLDatabase();
-        Statement stmt;
-        ResultSet resultSet = null;
+        initMysqlDatabaseConnection();
         Adres factuurAdres = null;
         
         try {
-        	stmt = con.createStatement();
             String query = "select * from Adres where KlantID = " + klantId + " AND type = '" + ADRESFACTUURTYPE + "'";
-            resultSet = stmt.executeQuery(query);
+            rs = stmt.executeQuery(query);
             
-            if (resultSet.getFetchSize() > 1) {
+            if (rs.getFetchSize() > 1) {
                 throw new GarbageDataException("Meer dan 1 factuuradres voor klant " + klantId);
             }
             
-            while (resultSet.next()) {
-                String straat = resultSet.getString("Straat");
-                String huisnummer = resultSet.getString("huisnummer");
-                String postcode = resultSet.getString("postcode");
-                String plaats = resultSet.getString("plaats");
-                String biC = resultSet.getString("BIC");
+            while (rs.next()) {
+                String straat = rs.getString("Straat");
+                String huisnummer = rs.getString("huisnummer");
+                String postcode = rs.getString("postcode");
+                String plaats = rs.getString("plaats");
+                String biC = rs.getString("BIC");
                 factuurAdres = new Adres(straat, huisnummer, postcode, plaats, biC);
             }
         }
@@ -191,36 +179,34 @@ public class MysqlLaderImpl implements MysqlLader {
         	throw e;
         }
         finally {
-        	if (con != null) {
-                con.close();
-        	}
+        	rs.close();
+        	stmt.close();
+            con.close();
         }
         return factuurAdres;
     }
 
     @Override
     public Persoon getPersoon(int persoonId) throws SQLException, ClassNotFoundException, GarbageDataException, IOException {
-        connectToMySQLDatabase();
-        Statement stmt;
-        ResultSet resultSet = null;
+        initMysqlDatabaseConnection();
+        Persoon persoon = null;
 
         try {
-        	stmt = con.createStatement();
             String query = "select * from Persoon where PersoonID = " + persoonId;
-            resultSet = stmt.executeQuery(query);
+            rs = stmt.executeQuery(query);
             
-            if (resultSet.getFetchSize() > 1) {
+            if (rs.getFetchSize() > 1) {
                 throw new GarbageDataException("Meer dan 1 Persoon voor PersoonId" + persoonId);
             }
             
-            while (resultSet.next()) {
-                int persoonsId = resultSet.getInt("PersoonID");
-                String voornaam = resultSet.getString("Voornaam");
-                String tussenvoegsel = resultSet.getString("Tussenvoegsel");
-                String achternaam = resultSet.getString("Achternaam");
-                String telefoon = resultSet.getString("Telefoon");
-                String fax = resultSet.getString("Fax");
-                String geslacht = resultSet.getString("Geslacht");
+            while (rs.next()) {
+                int persoonsId = rs.getInt("PersoonID");
+                String voornaam = rs.getString("Voornaam");
+                String tussenvoegsel = rs.getString("Tussenvoegsel");
+                String achternaam = rs.getString("Achternaam");
+                String telefoon = rs.getString("Telefoon");
+                String fax = rs.getString("Fax");
+                String geslacht = rs.getString("Geslacht");
                 Persoon.Geslacht convertedSex = Persoon.Geslacht.VROUW;
 
                 if (("0").equals(geslacht) || ("m").equalsIgnoreCase(geslacht)) {
@@ -234,9 +220,9 @@ public class MysqlLaderImpl implements MysqlLader {
         	throw e;
         }
         finally {
-        	if (con != null) {
-                con.close();
-        	}
+        	rs.close();
+        	stmt.close();
+            con.close();
         }
         return persoon;
     }
