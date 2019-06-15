@@ -2,7 +2,6 @@ package nl.hu.bep.group4.bifi.lader.implementations;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -19,7 +18,7 @@ import nl.hu.bep.group4.bifi.model.Persoon;
 
 public class PersoonLaderImplTest {
 	@Test
-	public void testGetPersonen() throws ClassNotFoundException, SQLException, GarbageDataException, FileNotFoundException, IOException {
+	public void testGetPersonen() throws ClassNotFoundException, SQLException, GarbageDataException, IOException {
 		final int testKlantId = 5;
 		final List<Persoon> personen = new ArrayList<>();
 		personen.add(new Persoon(3, "Jan", "Jansen", "van", "030-555555","fax",Persoon.Geslacht.MAN));
@@ -29,7 +28,7 @@ public class PersoonLaderImplTest {
 	}
 	
 	@Test
-	public void testGetPersoon() throws ClassNotFoundException, SQLException, GarbageDataException, FileNotFoundException, IOException {
+	public void testGetPersoon() throws ClassNotFoundException, SQLException, GarbageDataException, IOException {
 		final Persoon testPersoon = new Persoon(3, "Jan", "Jansen", "van", "030-555555","fax",Persoon.Geslacht.MAN);
 		PersoonLader persoonLader = setup(0, null, testPersoon);
 		
