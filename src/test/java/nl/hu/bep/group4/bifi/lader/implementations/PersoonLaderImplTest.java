@@ -1,61 +1,103 @@
 package nl.hu.bep.group4.bifi.lader.implementations;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
-import nl.hu.bep.group4.bifi.exceptions.GarbageDataException;
+import nl.hu.bep.group4.bifi.lader.AdresLader;
+import nl.hu.bep.group4.bifi.lader.LegacyJarLader;
 import nl.hu.bep.group4.bifi.lader.MysqlLader;
-import nl.hu.bep.group4.bifi.lader.PersoonLader;
-import nl.hu.bep.group4.bifi.model.Persoon;
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.replay;
-import org.easymock.EasyMockSupport;
-import org.easymock.Mock;
-import org.easymock.TestSubject;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 
-public class PersoonLaderImplTest {
+import nl.hu.bep.group4.bifi.lader.implementations.AdresLaderImpl;
+import nl.hu.bep.group4.bifi.model.Adres;
+import nl.hu.bep.group4.bifi.model.Klant;
+import nl.hu.bep.group4.bifi.model.Persoon;
 
-    private Persoon a;
-    private Persoon b;
-    private List<Persoon> persoonList;
+public class AdresLaderImplTest {
 
-    @Mock
-    private MysqlLader mysqlLader;
+	private AdresLader setup() {
+		LegacyJarLader legacyJarLader = new LegacyJarLader() {
+			@Override
+			public Adres laadAdres(String sleutel) throws IOException {
+				Adres adres;
+				switch(sleutel) {
+					case "MOATA":
+						adres = new Adres("Ajax", "5", "1901CD", "Rotterdam", "testBIC1");
+						break;
+					default:
+						return null;
+				}
+				return adres;
+			}
+		};
+		MysqlLader mysqlLader = new MysqlLader() {
+			@Override
+			public Klant getKlant(int klantId) {
+				return null;
+			}
 
-    @TestSubject
-    private PersoonLader persoonLader = new PersoonLaderImpl(mysqlLader);
+			@Override
+			public Adres getFactuurAdres(int klantId) throws SQLException {
+				return null;
+			}
 
+			@Override
+			public List<Adres> getAdressen(int klantId) throws SQLException, ClassNotFoundException {
+				List<Adres> adressen = new ArrayList<>();
+				switch(klantId) {
+					case 0:
+						return adressen;
+					case 1:
+						adressen.add(new Adres("Steenweg","59","3511JN","Utrecht","DABAIE2D"));
+						adressen.add(new Adres("Steenweg","59","3511JN","Utrecht","DABAIE2D"));
+						break;
+					case 2:
+						adressen.add(new Adres("Steenweg","32","3500EE","Utrecht","DABAIE2D"));
+						adressen.add(new Adres("-MOATA",null,null,null,null));
+						break;
+					default:
+						break;
+				}
+				return adressen;
+			}
 
-    //BeforeEach not working in Wercker. Shit tool
-    //@BeforeEach
-    public void setup() {
-        EasyMockSupport.injectMocks(this);
-        a = new Persoon(1, "Nick", "Stuivenber", "", "", "", Persoon.Geslacht.MAN);
-        b = new Persoon(2, "Bo", "Stuivenber", "", "", "", Persoon.Geslacht.VROUW);
+			@Override
+			public List<Persoon> getPersonen(int klantId) throws SQLException, ClassNotFoundException {
+				return null;
+			}
 
-        persoonList = new ArrayList<>();
-        persoonList.add(a);
-        persoonList.add(b);
-    }
+			@Override
+			public Persoon getPersoon(int persoonId) throws SQLException, ClassNotFoundException {
+				return null;
+			}
+		};
+		return new AdresLaderImpl(legacyJarLader, mysqlLader);
+	}
 
-    @Test
-    public void testPersoonLaderGetPersoon() throws ClassNotFoundException, SQLException, GarbageDataException {
-        setup();
-        expect(mysqlLader.getPersoon(1)).andReturn(a);
-        replay(mysqlLader);
-
-
-        assertEquals(a, persoonLader.getPersoon(1));
-    }
-
-    @Test
-    public void testPersoonLaderGetPersonen() throws GarbageDataException, SQLException, ClassNotFoundException {
-        setup();
-        expect(mysqlLader.getPersonen(1)).andReturn(persoonList);
-        assertEquals(persoonList.size(), 2);
-        assertEquals(persoonList.get(0), a);
-        assertEquals(persoonList.get(1), b);
-    }
+	@Test
+	public void testAdresUitMysqlLader() throws SQLException, IOException, ClassNotFoundException {
+		AdresLader lader = setup();
+		Adres a = lader.getAdressen(1).get(0);
+		assertEquals(a.getStraat(), "Steenweg");
+		assertEquals(a.getHuisnummer(), "59");
+		assertEquals(a.getPostcode(), "3511JN");
+		assertEquals(a.getPlaats(), "Utrecht");
+		assertEquals(a.getBiC(), "DABAIE2D");
+	}
+	
+	@Test
+	public void testAdresUitLegacyJarLader() throws SQLException, IOException, ClassNotFoundException {
+		AdresLader lader = setup();
+		Adres a = lader.getAdressen(2).get(1);
+		assertEquals(a.getStraat(), "Ajax");
+		assertEquals(a.getHuisnummer(), "5");
+		assertEquals(a.getPostcode(), "1901CD");
+		assertEquals(a.getPlaats(), "Rotterdam");
+		assertEquals(a.getBiC(), "testBIC1");
+	}
 }

@@ -64,7 +64,6 @@ public class AdresLaderImplTest {
 						break;
 				}
 				return adressen;
-
 			}
 
 			@Override

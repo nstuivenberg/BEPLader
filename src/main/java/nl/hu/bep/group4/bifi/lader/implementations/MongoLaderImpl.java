@@ -1,5 +1,6 @@
 package nl.hu.bep.group4.bifi.lader.implementations;
 
+import java.time.Instant;
 import nl.hu.bep.group4.bifi.exceptions.GarbageDataException;
 import nl.hu.bep.group4.bifi.lader.MongoLader;
 import nl.hu.bep.group4.bifi.model.Factuur;
@@ -54,10 +55,11 @@ public class MongoLaderImpl implements MongoLader {
 			Date date = factuurVanMongo.getDate("date");
 			Calendar factuurDate = Calendar.getInstance();
 			factuurDate.setTime(date);
+			Instant instant = date.toInstant();
 			
 			if (factuurDate.get(Calendar.MONTH) == maandNummer) {
 				Factuur factuur = new Factuur();
-				factuur.setDatumtijd(date.toString());
+				factuur.setDatumtijd(instant.toString());
 				factuur.setFactuurNummer(factuurVanMongo.getInteger("invoiceId"));
 				factuur.setOpmerking(factuurVanMongo.getString("note"));
 				factuur.setContactPersoon(new Persoon(factuurVanMongo.getInteger("personId")));
