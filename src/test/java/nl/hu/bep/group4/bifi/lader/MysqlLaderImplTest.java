@@ -53,6 +53,6 @@ class getKlantMysqlLaderImplTest {
 
     @Test
     public void testEnviroment(){
-       System.out.print( System.getenv("BEP_MySQLUs ername"));
+       System.out.print( System.getenv("BEP_MySQLUsername"));
     }
 }

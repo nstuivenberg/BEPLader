@@ -29,11 +29,13 @@ public class MongoLaderImpl implements MongoLader {
 	public MongoCollection<Document> connectToMongoDB() {
 		MongoCollection<Document> BEPBifi = null;
 		String database = "BEPBifi";
-		
+
 		MongoClientURI uri = new MongoClientURI("mongodb+srv://dbUser:112112@cluster0-vk3z3.mongodb.net/test?retryWrites=true");
 		MongoClient mongoClient = new MongoClient(uri);
 		db = mongoClient.getDatabase(database);
 		BEPBifi = db.getCollection("BEPBifi");
+
+		mongoClient.close();
 		return BEPBifi;
 	}
 
