@@ -67,6 +67,7 @@ public class MongoLaderImpl implements MongoLader {
 			}
 		}
 		return facturen;	
+
 	}
 
 	private ArrayList<Factuur> fillFacturenList(List<Factuur> facturen, Document factuurVanMongo) throws GarbageDataException {
@@ -128,5 +129,4 @@ public class MongoLaderImpl implements MongoLader {
 		factuur.setContactPersoon(new Persoon(factuurVanMongo.getInteger("personId")));
 		factuur.setKlant(new Klant(factuurVanMongo.getInteger("customerId")));
 	}
-
 }
