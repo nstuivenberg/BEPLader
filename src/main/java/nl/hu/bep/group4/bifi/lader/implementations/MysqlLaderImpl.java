@@ -10,6 +10,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
 import nl.hu.bep.group4.bifi.lader.MysqlLader;
 import nl.hu.bep.group4.bifi.model.Adres;
 import nl.hu.bep.group4.bifi.model.Klant;
@@ -25,22 +26,37 @@ public class MysqlLaderImpl implements MysqlLader {
     private static final String ADRESFACTUURTYPE = "F";
 
     private Connection con = null;
+    private String username;
+    private String password;
+    private String url;
 
 
     private Connection connectToMySQLDatabase() throws ClassNotFoundException, SQLException {
         Class.forName("com.mysql.cj.jdbc.Driver");
-        Properties props = new Properties();
-        InputStream input = null;
-        try {
-            props.load(input = new FileInputStream("src/config/config.properties"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        String url = props.getProperty("MYSQLUrl");
-        String username =  props.getProperty("MySQLUsername");
-        String password =  props.getProperty("MySQLPassword");
-        con = DriverManager.getConnection(url,username,password);
+
+
+        con = DriverManager.getConnection(url, username, password);
         return con;
+    }
+
+    private void setConfigVariables() {
+        if (System.getenv("BEP_MySQLUsername") != null) {
+            this.username = System.getenv("BEP_MySQLUsername");
+            this.password = System.getenv("BEP_MySQLPassword");
+            this.url = System.getenv("BEP_MYSQLUrl");
+        } else {
+            Properties props = new Properties();
+            InputStream input = null;
+
+            try {
+                props.load(input = new FileInputStream("src/config/config.properties"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            this.url = props.getProperty("MYSQLUrl");
+            this.username = props.getProperty("MySQLUsername");
+            this.password = props.getProperty("MySQLPassword");
+        }
     }
 
     @Override
