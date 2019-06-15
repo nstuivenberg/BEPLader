@@ -3,9 +3,7 @@ package nl.hu.bep.group4.bifi.lader.implementations;
 import nl.hu.bep.group4.bifi.exceptions.GarbageDataException;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -39,16 +37,15 @@ public class MysqlLaderImpl implements MysqlLader {
         return con;
     }
 
-    private void setConfigVariables() throws FileNotFoundException, IOException {
+    private void setConfigVariables() throws IOException {
         if (System.getenv("BEP_MySQLUsername") != null) {
             this.username = System.getenv("BEP_MySQLUsername");
             this.password = System.getenv("BEP_MySQLPassword");
             this.url = System.getenv("BEP_MYSQLUrl");
         } else {
             Properties props = new Properties();
-            InputStream input = null;
-
-            props.load(input = new FileInputStream("src/config/config.properties"));
+            props.load(new FileInputStream("src/config/config.properties"));
+            
             this.url = props.getProperty("MYSQLUrl");
             this.username = props.getProperty("MySQLUsername");
             this.password = props.getProperty("MySQLPassword");
@@ -71,7 +68,7 @@ public class MysqlLaderImpl implements MysqlLader {
             String huisnummer = resultSet.getString("huisnummer");
             String postcode = resultSet.getString("postcode");
             String plaats = resultSet.getString("plaats");
-            String BiC = resultSet.getString("BIC");
+            String biC = resultSet.getString("BIC");
 
             Adres adres = new Adres(straat, huisnummer, postcode, plaats, BiC);
             adressen.add(adres);
@@ -164,7 +161,7 @@ public class MysqlLaderImpl implements MysqlLader {
             String huisnummer = resultSet.getString("huisnummer");
             String postcode = resultSet.getString("postcode");
             String plaats = resultSet.getString("plaats");
-            String BiC = resultSet.getString("BIC");
+            String biC = resultSet.getString("BIC");
 
             factuurAdres = new Adres(straat, huisnummer, postcode, plaats, BiC);
         }
