@@ -110,10 +110,6 @@ public class MongoLaderImpl implements MongoLader {
 				facturen.add(factuur);
 			}
 		}
-		for(Factuur f : facturen) {
-			System.out.println(f.toString());
-		}
-		System.out.println("End of getFacturenVoorMaand()");
 		return facturen;	
 	}
 	
