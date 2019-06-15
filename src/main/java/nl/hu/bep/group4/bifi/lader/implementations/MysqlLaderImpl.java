@@ -3,6 +3,7 @@ package nl.hu.bep.group4.bifi.lader.implementations;
 import nl.hu.bep.group4.bifi.exceptions.GarbageDataException;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -31,14 +32,14 @@ public class MysqlLaderImpl implements MysqlLader {
     private String url;
 
 
-    private Connection connectToMySQLDatabase() throws ClassNotFoundException, SQLException {
+    private Connection connectToMySQLDatabase() throws ClassNotFoundException, SQLException, FileNotFoundException, IOException {
         Class.forName("com.mysql.cj.jdbc.Driver");
         setConfigVariables();
         con = DriverManager.getConnection(url, username, password);
         return con;
     }
 
-    private void setConfigVariables() {
+    private void setConfigVariables() throws FileNotFoundException, IOException {
         if (System.getenv("BEP_MySQLUsername") != null) {
             this.username = System.getenv("BEP_MySQLUsername");
             this.password = System.getenv("BEP_MySQLPassword");
@@ -47,11 +48,7 @@ public class MysqlLaderImpl implements MysqlLader {
             Properties props = new Properties();
             InputStream input = null;
 
-            try {
-                props.load(input = new FileInputStream("src/config/config.properties"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            props.load(input = new FileInputStream("src/config/config.properties"));
             this.url = props.getProperty("MYSQLUrl");
             this.username = props.getProperty("MySQLUsername");
             this.password = props.getProperty("MySQLPassword");
@@ -59,7 +56,7 @@ public class MysqlLaderImpl implements MysqlLader {
     }
 
     @Override
-    public List<Adres> getAdressen(int klantId) throws SQLException, ClassNotFoundException {
+    public List<Adres> getAdressen(int klantId) throws SQLException, ClassNotFoundException, FileNotFoundException, IOException {
         connectToMySQLDatabase();
         Statement stmt;
         ResultSet resultSet;
@@ -85,7 +82,7 @@ public class MysqlLaderImpl implements MysqlLader {
     }
 
     @Override
-    public Klant getKlant(int klantId) throws SQLException, ClassNotFoundException {
+    public Klant getKlant(int klantId) throws SQLException, ClassNotFoundException, FileNotFoundException, IOException {
         connectToMySQLDatabase();
         Statement stmt;
         ResultSet resultSet = null;
@@ -113,7 +110,7 @@ public class MysqlLaderImpl implements MysqlLader {
     }
 
     @Override
-    public List<Persoon> getPersonen(int klantId) throws SQLException, ClassNotFoundException {
+    public List<Persoon> getPersonen(int klantId) throws SQLException, ClassNotFoundException, FileNotFoundException, IOException {
         connectToMySQLDatabase();
         Statement stmt;
         ResultSet resultSet = null;
@@ -146,7 +143,7 @@ public class MysqlLaderImpl implements MysqlLader {
     }
 
     @Override
-    public Adres getFactuurAdres(int klantId) throws SQLException, ClassNotFoundException, GarbageDataException {
+    public Adres getFactuurAdres(int klantId) throws SQLException, ClassNotFoundException, GarbageDataException, FileNotFoundException, IOException {
         connectToMySQLDatabase();
         Statement stmt;
         ResultSet resultSet = null;
@@ -176,7 +173,7 @@ public class MysqlLaderImpl implements MysqlLader {
     }
 
     @Override
-    public Persoon getPersoon(int persoonId) throws SQLException, ClassNotFoundException, GarbageDataException {
+    public Persoon getPersoon(int persoonId) throws SQLException, ClassNotFoundException, GarbageDataException, FileNotFoundException, IOException {
         connectToMySQLDatabase();
         Statement stmt;
         ResultSet resultSet = null;

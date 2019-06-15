@@ -5,14 +5,9 @@ import nl.hu.bep.group4.bifi.lader.implementations.MysqlLaderImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.sql.SQLException;
-import java.util.Properties;
-
-import static java.lang.System.getProperty;
 
 class getKlantMysqlLaderImplTest {
 
@@ -24,28 +19,28 @@ class getKlantMysqlLaderImplTest {
     }
 
     @Test
-    public void getAdresTest() throws ClassNotFoundException, SQLException{
+    public void getAdresTest() throws ClassNotFoundException, SQLException, FileNotFoundException, IOException{
         MysqlLaderImpl sql = new MysqlLaderImpl();
 
         sql.getAdressen(1);
     }
 
     @Test
-    public void getPersonenTest() throws ClassNotFoundException, SQLException{
+    public void getPersonenTest() throws ClassNotFoundException, SQLException, FileNotFoundException, IOException{
         MysqlLaderImpl sql = new MysqlLaderImpl();
 
         sql.getPersonen(1);
     }
 
     @Test
-    public void getKlantTest() throws ClassNotFoundException, SQLException{
+    public void getKlantTest() throws ClassNotFoundException, SQLException, FileNotFoundException, IOException{
         MysqlLaderImpl sql = new MysqlLaderImpl();
 
         sql.getKlant(1);
     }
 
     @Test
-    public void getPersoonTest() throws ClassNotFoundException, SQLException, GarbageDataException {
+    public void getPersoonTest() throws ClassNotFoundException, SQLException, GarbageDataException, FileNotFoundException, IOException {
         MysqlLaderImpl sql = new MysqlLaderImpl();
 
         sql.getPersoon(1);

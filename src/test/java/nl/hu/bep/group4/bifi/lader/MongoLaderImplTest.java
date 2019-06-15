@@ -15,7 +15,7 @@ public class MongoLaderImplTest {
 	@Test
 	public void testConnection() {
 		MongoLaderImpl mongoLader = setup();
-		System.out.println(mongoLader.connectToMongoDB());
+		mongoLader.connectToMongoDB();
 	}
 	
 	@Test
