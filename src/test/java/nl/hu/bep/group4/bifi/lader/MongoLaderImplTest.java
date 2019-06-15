@@ -23,6 +23,11 @@ public class MongoLaderImplTest {
 		MongoLaderImpl mongoLader = setup();
 		mongoLader.getFacturenVoorMaand(4);
 	}
+
+	@Test
+	public void setFactuurSettingsTest() throws GarbageDataException {
+		MongoLaderImpl mongoLader = setup();
+	}
 	
 	
 }

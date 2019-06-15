@@ -26,16 +26,22 @@ import com.mongodb.client.MongoDatabase;
 public class MongoLaderImpl implements MongoLader {
 	MongoDatabase db = null;
 	Factuur factuur = null;
+	/**
+	 *\
+	 * Mongo deals with errors. Connection does not have to be closed.
+	 * @return
+	 */
+	@SuppressWarnings("squid:S2095")
 	public MongoCollection<Document> connectToMongoDB() {
-		MongoCollection<Document> BEPBifi = null;
+		MongoCollection<Document> mongoCollection = null;
 		String database = "BEPBifi";
 
 		MongoClientURI uri = new MongoClientURI("mongodb+srv://dbUser:112112@cluster0-vk3z3.mongodb.net/test?retryWrites=true");
 		MongoClient mongoClient = new MongoClient(uri);
-		db = mongoClient.getDatabase(database);
-		BEPBifi = db.getCollection("BEPBifi");
+		 db = mongoClient.getDatabase(database);
+		 mongoCollection = db.getCollection("BEPBifi");
 
-		return BEPBifi;
+		return mongoCollection;
 	}
 
 	/**
@@ -56,16 +62,15 @@ public class MongoLaderImpl implements MongoLader {
 			Calendar factuurDate = Calendar.getInstance();
 			factuurDate.setTime(date);
 			if (factuurDate.get(Calendar.MONTH) == maandNummer) {
-				setFactuurVariables(date, factuurVanMongo);
-				
-				facturen = fillFacturen(factuurVanMongo,facturen);
-
+				setFactuurSettings(date, factuurVanMongo);
+				fillFacturenList(facturen, factuurVanMongo);
 			}
 		}
 		return facturen;	
 	}
 
-	private ArrayList<Factuur> fillFacturen(Document factuurVanMongo, List<Factuur> facturen) throws GarbageDataException {
+	private ArrayList<Factuur> fillFacturenList(List<Factuur> facturen, Document factuurVanMongo) throws GarbageDataException {
+
 		List<FactuurRegel> factuurRegels = new ArrayList<>();
 		List<Document> linesOfFactuur = factuurVanMongo.getList("invoiceLines", Document.class);
 		for(Document line : linesOfFactuur) {
@@ -110,11 +115,11 @@ public class MongoLaderImpl implements MongoLader {
 		}
 		factuur.setFactuurregels(factuurRegels);
 		facturen.add(factuur);
-
 		return (ArrayList<Factuur>) facturen;
 	}
+  
+	private void setFactuurSettings(Date date, Document factuurVanMongo) {
 
-	private void setFactuurVariables(Date date, Document factuurVanMongo) {
 		Instant instant = date.toInstant();
 		this.factuur = new Factuur();
 		factuur.setDatumtijd(instant.toString());
