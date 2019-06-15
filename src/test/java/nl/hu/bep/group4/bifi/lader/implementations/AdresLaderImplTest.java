@@ -117,7 +117,7 @@ public class AdresLaderImplTest {
 		assertEquals("59", a.getHuisnummer());
 		assertEquals("3511JN", a.getPostcode());
 		assertEquals("Utrecht", a.getPlaats());
-		assertEquals("DABAIE2D", a.getBiC());
+		assertEquals("DABAIE2D", a.getBic());
 	}
 	
 	@Test
@@ -128,7 +128,7 @@ public class AdresLaderImplTest {
 		assertEquals("5", a.getHuisnummer());
 		assertEquals("1901CD", a.getPostcode());
 		assertEquals("Rotterdam", a.getPlaats());
-		assertEquals("testBIC1", a.getBiC());
+		assertEquals("testBIC1", a.getBic());
 	}
 	
 	@Test
@@ -153,7 +153,7 @@ public class AdresLaderImplTest {
 		assertEquals("59", a.getHuisnummer());
 		assertEquals("3511JN", a.getPostcode());
 		assertEquals("Utrecht", a.getPlaats());
-		assertEquals("DABAIE2D", a.getBiC());
+		assertEquals("DABAIE2D", a.getBic());
 	}
 	
 	@Test
@@ -164,7 +164,7 @@ public class AdresLaderImplTest {
 		assertEquals("5", a.getHuisnummer());
 		assertEquals("1901CD", a.getPostcode());
 		assertEquals("Rotterdam", a.getPlaats());
-		assertEquals("testBIC1", a.getBiC());
+		assertEquals("testBIC1", a.getBic());
 	}
 	
 	@Test
@@ -175,6 +175,6 @@ public class AdresLaderImplTest {
 		assertEquals("", a.getHuisnummer());
 		assertEquals("", a.getPostcode());
 		assertEquals("", a.getPlaats());
-		assertEquals("", a.getBiC());
+		assertEquals("", a.getBic());
 	}
 }
