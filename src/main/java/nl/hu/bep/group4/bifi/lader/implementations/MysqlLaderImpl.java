@@ -30,7 +30,6 @@ public class MysqlLaderImpl implements MysqlLader {
     private String password;
     private String url;
 
-
     private Connection connectToMySQLDatabase() throws ClassNotFoundException, SQLException, IOException {
         Class.forName("com.mysql.cj.jdbc.Driver");
         setConfigVariables();
@@ -58,22 +57,31 @@ public class MysqlLaderImpl implements MysqlLader {
         connectToMySQLDatabase();
         Statement stmt;
         ResultSet resultSet;
-        String query = "select * from Adres where KlantID = " + klantId + " AND Type <> '" + ADRESFACTUURTYPE + "'";
         List<Adres> adressen = new ArrayList<>();
+        
+        try {
+        	stmt = con.createStatement();
+            String query = "select * from Adres where KlantID = " + klantId + " AND Type <> '" + ADRESFACTUURTYPE + "'";
+            resultSet = stmt.executeQuery(query);
 
-        stmt = con.createStatement();
-        resultSet = stmt.executeQuery(query);
-
-        while (resultSet.next()) {
-            String straat = resultSet.getString("Straat");
-            String huisnummer = resultSet.getString("huisnummer");
-            String postcode = resultSet.getString("postcode");
-            String plaats = resultSet.getString("plaats");
-            String biC = resultSet.getString("BIC");
-            Adres adres = new Adres(straat, huisnummer, postcode, plaats, biC);
-            adressen.add(adres);
+            while (resultSet.next()) {
+                String straat = resultSet.getString("Straat");
+                String huisnummer = resultSet.getString("huisnummer");
+                String postcode = resultSet.getString("postcode");
+                String plaats = resultSet.getString("plaats");
+                String biC = resultSet.getString("BIC");
+                Adres adres = new Adres(straat, huisnummer, postcode, plaats, biC);
+                adressen.add(adres);
+            }
         }
-        con.close();
+        catch (SQLException e) {
+        	throw e;
+        }
+        finally {
+        	if (con != null) {
+                con.close();
+        	}
+        }
         return adressen;
     }
 
@@ -83,25 +91,33 @@ public class MysqlLaderImpl implements MysqlLader {
         Statement stmt;
         ResultSet resultSet = null;
         Klant klant = null;
-        String query = "select * from Klant where KlantID = " + klantId;
-
-        stmt = con.createStatement();
-        resultSet = stmt.executeQuery(query);
-
-        while (resultSet.next()) {
-            String bedrijfsnaam = resultSet.getString("Bedrijfsnaam");
-            String rechtsvorm = resultSet.getString("rechtsvorm");
-            String vAT = resultSet.getString("VAT");
-            String bankrekeningNummer = resultSet.getString("BankRek");
-            String giroNummer = resultSet.getString("Giro");
-            String biC = resultSet.getString("BiK");
-            List<Persoon> contactPersonen = new ArrayList<>();
-            List<Adres> adres = new ArrayList<>();
-            Adres factuurAdres = null;
-
-            klant = new Klant(klantId, bedrijfsnaam, rechtsvorm, vAT, bankrekeningNummer, giroNummer, biC, contactPersonen, adres, factuurAdres);
+        
+        try {
+        	stmt = con.createStatement();
+        	String query = "select * from Klant where KlantID = " + klantId;
+        	resultSet = stmt.executeQuery(query);
+        	
+        	while (resultSet.next()) {
+                String bedrijfsnaam = resultSet.getString("Bedrijfsnaam");
+                String rechtsvorm = resultSet.getString("rechtsvorm");
+                String vAT = resultSet.getString("VAT");
+                String bankrekeningNummer = resultSet.getString("BankRek");
+                String giroNummer = resultSet.getString("Giro");
+                String biC = resultSet.getString("BiK");
+                List<Persoon> contactPersonen = new ArrayList<>();
+                List<Adres> adres = new ArrayList<>();
+                Adres factuurAdres = null;
+                klant = new Klant(klantId, bedrijfsnaam, rechtsvorm, vAT, bankrekeningNummer, giroNummer, biC, contactPersonen, adres, factuurAdres);
+            }
         }
-        con.close();
+        catch (SQLException e) {
+        	throw e;
+        }
+        finally {
+        	if (con != null) {
+                con.close();
+        	}
+        }
         return klant;
     }
 
@@ -110,30 +126,39 @@ public class MysqlLaderImpl implements MysqlLader {
         connectToMySQLDatabase();
         Statement stmt;
         ResultSet resultSet = null;
-        String query = "select * from Persoon where KlantID = " + klantId;
         List<Persoon> personen = new ArrayList<>();
 
-        stmt = con.createStatement();
-        resultSet = stmt.executeQuery(query);
+        try {
+        	stmt = con.createStatement();
+            String query = "select * from Persoon where KlantID = " + klantId;
+            resultSet = stmt.executeQuery(query);
+            
+            while (resultSet.next()) {
+                int persoonsId = resultSet.getInt("PersoonID");
+                String voornaam = resultSet.getString("Voornaam");
+                String tussenvoegsel = resultSet.getString("Tussenvoegsel");
+                String achternaam = resultSet.getString("Achternaam");
+                String telefoon = resultSet.getString("Telefoon");
+                String fax = resultSet.getString("Fax");
+                String geslacht = resultSet.getString("Geslacht");
+                Persoon.Geslacht convertedSex = Persoon.Geslacht.VROUW;
 
-        while (resultSet.next()) {
-            int persoonsId = resultSet.getInt("PersoonID");
-            String voornaam = resultSet.getString("Voornaam");
-            String tussenvoegsel = resultSet.getString("Tussenvoegsel");
-            String achternaam = resultSet.getString("Achternaam");
-            String telefoon = resultSet.getString("Telefoon");
-            String fax = resultSet.getString("Fax");
-            String geslacht = resultSet.getString("Geslacht");
-            Persoon.Geslacht convertedSex = Persoon.Geslacht.VROUW;
+                if (("0").equals(geslacht) || ("m").equalsIgnoreCase(geslacht)) {
+                    convertedSex = Persoon.Geslacht.MAN;
+                }
 
-            if (("0").equals(geslacht) || ("m").equalsIgnoreCase(geslacht)) {
-                convertedSex = Persoon.Geslacht.MAN;
+                Persoon persoon = new Persoon(persoonsId, voornaam, tussenvoegsel, achternaam, telefoon, fax, convertedSex);
+                personen.add(persoon);
             }
-
-            Persoon persoon = new Persoon(persoonsId, voornaam, tussenvoegsel, achternaam, telefoon, fax, convertedSex);
-            personen.add(persoon);
         }
-        con.close();
+        catch (SQLException e) {
+        	throw e;
+        }
+        finally {
+        	if (con != null) {
+                con.close();
+        	}
+        }
         return personen;
     }
 
@@ -142,27 +167,34 @@ public class MysqlLaderImpl implements MysqlLader {
         connectToMySQLDatabase();
         Statement stmt;
         ResultSet resultSet = null;
-
-        String query = "select * from Adres where KlantID = " + klantId + " AND type = '" + ADRESFACTUURTYPE + "'";
-
         Adres factuurAdres = null;
-
-        stmt = con.createStatement();
-        resultSet = stmt.executeQuery(query);
-
-        if (resultSet.getFetchSize() > 1) {
-            throw new GarbageDataException("Meer dan 1 factuuradres voor klant " + klantId);
+        
+        try {
+        	stmt = con.createStatement();
+            String query = "select * from Adres where KlantID = " + klantId + " AND type = '" + ADRESFACTUURTYPE + "'";
+            resultSet = stmt.executeQuery(query);
+            
+            if (resultSet.getFetchSize() > 1) {
+                throw new GarbageDataException("Meer dan 1 factuuradres voor klant " + klantId);
+            }
+            
+            while (resultSet.next()) {
+                String straat = resultSet.getString("Straat");
+                String huisnummer = resultSet.getString("huisnummer");
+                String postcode = resultSet.getString("postcode");
+                String plaats = resultSet.getString("plaats");
+                String biC = resultSet.getString("BIC");
+                factuurAdres = new Adres(straat, huisnummer, postcode, plaats, biC);
+            }
         }
-
-        while (resultSet.next()) {
-            String straat = resultSet.getString("Straat");
-            String huisnummer = resultSet.getString("huisnummer");
-            String postcode = resultSet.getString("postcode");
-            String plaats = resultSet.getString("plaats");
-            String biC = resultSet.getString("BIC");
-            factuurAdres = new Adres(straat, huisnummer, postcode, plaats, biC);
+        catch (SQLException e) {
+        	throw e;
         }
-        con.close();
+        finally {
+        	if (con != null) {
+                con.close();
+        	}
+        }
         return factuurAdres;
     }
 
@@ -171,29 +203,40 @@ public class MysqlLaderImpl implements MysqlLader {
         connectToMySQLDatabase();
         Statement stmt;
         ResultSet resultSet = null;
-        String query = "select * from Persoon where PersoonID = " + persoonId;
 
-        stmt = con.createStatement();
-        resultSet = stmt.executeQuery(query);
-        if (resultSet.getFetchSize() > 1) {
-            throw new GarbageDataException("Meer dan 1 Persoon voor PersoonId" + persoonId);
-        }
-        while (resultSet.next()) {
-            int persoonsId = resultSet.getInt("PersoonID");
-            String voornaam = resultSet.getString("Voornaam");
-            String tussenvoegsel = resultSet.getString("Tussenvoegsel");
-            String achternaam = resultSet.getString("Achternaam");
-            String telefoon = resultSet.getString("Telefoon");
-            String fax = resultSet.getString("Fax");
-            String geslacht = resultSet.getString("Geslacht");
-
-            Persoon.Geslacht convertedSex = Persoon.Geslacht.VROUW;
-
-            if (("0").equals(geslacht) || ("m").equalsIgnoreCase(geslacht)) {
-                convertedSex = Persoon.Geslacht.MAN;
+        try {
+        	stmt = con.createStatement();
+            String query = "select * from Persoon where PersoonID = " + persoonId;
+            resultSet = stmt.executeQuery(query);
+            
+            if (resultSet.getFetchSize() > 1) {
+                throw new GarbageDataException("Meer dan 1 Persoon voor PersoonId" + persoonId);
             }
-            persoon = new Persoon(persoonsId, voornaam, tussenvoegsel, achternaam, telefoon, fax, convertedSex);
+            
+            while (resultSet.next()) {
+                int persoonsId = resultSet.getInt("PersoonID");
+                String voornaam = resultSet.getString("Voornaam");
+                String tussenvoegsel = resultSet.getString("Tussenvoegsel");
+                String achternaam = resultSet.getString("Achternaam");
+                String telefoon = resultSet.getString("Telefoon");
+                String fax = resultSet.getString("Fax");
+                String geslacht = resultSet.getString("Geslacht");
+                Persoon.Geslacht convertedSex = Persoon.Geslacht.VROUW;
 
+                if (("0").equals(geslacht) || ("m").equalsIgnoreCase(geslacht)) {
+                    convertedSex = Persoon.Geslacht.MAN;
+                }
+                
+                persoon = new Persoon(persoonsId, voornaam, tussenvoegsel, achternaam, telefoon, fax, convertedSex);
+            }
+        }
+        catch (SQLException e) {
+        	throw e;
+        }
+        finally {
+        	if (con != null) {
+                con.close();
+        	}
         }
         return persoon;
     }
