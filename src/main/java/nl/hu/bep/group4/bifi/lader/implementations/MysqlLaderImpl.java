@@ -70,7 +70,7 @@ public class MysqlLaderImpl implements MysqlLader {
             String plaats = resultSet.getString("plaats");
             String biC = resultSet.getString("BIC");
 
-            Adres adres = new Adres(straat, huisnummer, postcode, plaats, BiC);
+            Adres adres = new Adres(straat, huisnummer, postcode, plaats, biC);
             adressen.add(adres);
         }
         con.close();
@@ -163,7 +163,7 @@ public class MysqlLaderImpl implements MysqlLader {
             String plaats = resultSet.getString("plaats");
             String biC = resultSet.getString("BIC");
 
-            factuurAdres = new Adres(straat, huisnummer, postcode, plaats, BiC);
+            factuurAdres = new Adres(straat, huisnummer, postcode, plaats, biC);
         }
         con.close();
         return factuurAdres;

@@ -7,6 +7,7 @@ import nl.hu.bep.group4.bifi.lader.AdresLader;
 import nl.hu.bep.group4.bifi.lader.LegacyJarLader;
 import nl.hu.bep.group4.bifi.lader.MysqlLader;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -127,21 +128,21 @@ public class AdresLaderImplTest {
 		assertEquals("5", a.getHuisnummer());
 		assertEquals("1901CD", a.getPostcode());
 		assertEquals("Rotterdam", a.getPlaats());
-		assertEquals(a.getBiC(), "testBIC1");
+		assertEquals("testBIC1", a.getBiC());
 	}
 	
 	@Test
 	public void testAdresZonderStraat() throws ClassNotFoundException, SQLException, IOException {
 		AdresLader lader = setup();
 		List<Adres> aL = lader.getAdressen(3);
-		assertEquals(aL.isEmpty(), true);
+		assertTrue(aL.isEmpty());
 	}
 	
 	@Test
 	public void testAdresVanOngeldigeKlant() throws SQLException, IOException, ClassNotFoundException {
 		AdresLader lader = setup();
 		List<Adres> aL = lader.getAdressen(6);
-		assertEquals(aL.isEmpty(), true);
+		assertTrue(aL.isEmpty());
 	}
 	
 	@Test
