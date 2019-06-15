@@ -23,6 +23,7 @@ import java.util.Properties;
 public class MysqlLaderImpl implements MysqlLader {
 
     private static final String ADRESFACTUURTYPE = "F";
+    Persoon persoon = null;
 
     private Connection con = null;
     private String username;
@@ -118,21 +119,8 @@ public class MysqlLaderImpl implements MysqlLader {
         resultSet = stmt.executeQuery(query);
 
         while (resultSet.next()) {
-            Integer persoonId = resultSet.getInt("PersoonID");
-            String voornaam = resultSet.getString("Voornaam");
-            String tussenvoegsel = resultSet.getString("Tussenvoegsel");
-            String achternaam = resultSet.getString("Achternaam");
-            String telefoon = resultSet.getString("Telefoon");
-            String fax = resultSet.getString("Fax");
-            String geslacht = resultSet.getString("Geslacht");
+            persoon = createPersoon(resultSet);
 
-            Persoon.Geslacht convertedSex = Persoon.Geslacht.VROUW;
-
-            if (("0").equals(geslacht) || ("m").equalsIgnoreCase(geslacht)) {
-                convertedSex = Persoon.Geslacht.MAN;
-            }
-
-            Persoon persoon = new Persoon(persoonId, voornaam, achternaam, tussenvoegsel, telefoon, fax, convertedSex);
             personen.add(persoon);
         }
         con.close();
@@ -178,26 +166,31 @@ public class MysqlLaderImpl implements MysqlLader {
 
         stmt = con.createStatement();
         resultSet = stmt.executeQuery(query);
-        Persoon persoon = null;
         if (resultSet.getFetchSize() > 1) {
             throw new GarbageDataException("Meer dan 1 Persoon voor PersoonId" + persoonId);
         }
         while (resultSet.next()) {
-            int persoonsId = resultSet.getInt("PersoonID");
-            String voornaam = resultSet.getString("Voornaam");
-            String tussenvoegsel = resultSet.getString("Tussenvoegsel");
-            String achternaam = resultSet.getString("Achternaam");
-            String telefoon = resultSet.getString("Telefoon");
-            String fax = resultSet.getString("Fax");
-            String geslacht = resultSet.getString("Geslacht");
+            persoon = createPersoon(resultSet);
 
-            Persoon.Geslacht convertedSex = Persoon.Geslacht.VROUW;
-
-            if (("0").equals(geslacht) || ("m").equalsIgnoreCase(geslacht)) {
-                convertedSex = Persoon.Geslacht.MAN;
-            }
-            persoon = new Persoon(persoonsId, voornaam, achternaam, tussenvoegsel, telefoon, fax, convertedSex);
         }
+        return persoon;
+    }
+
+    private Persoon createPersoon(ResultSet resultSet) throws SQLException {
+        int persoonsId = resultSet.getInt("PersoonID");
+        String voornaam = resultSet.getString("Voornaam");
+        String tussenvoegsel = resultSet.getString("Tussenvoegsel");
+        String achternaam = resultSet.getString("Achternaam");
+        String telefoon = resultSet.getString("Telefoon");
+        String fax = resultSet.getString("Fax");
+        String geslacht = resultSet.getString("Geslacht");
+
+        Persoon.Geslacht convertedSex = Persoon.Geslacht.VROUW;
+
+        if (("0").equals(geslacht) || ("m").equalsIgnoreCase(geslacht)) {
+            convertedSex = Persoon.Geslacht.MAN;
+        }
+        persoon = new Persoon(persoonsId, voornaam, achternaam, tussenvoegsel, telefoon, fax, convertedSex);
         return persoon;
     }
 }
