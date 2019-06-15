@@ -28,9 +28,8 @@ public class FactuurLaderFactory {
 
 		KlantLader klantLader = new KlantLaderImpl(adresLader, persoonLader, mysqlLader);
 
-		FactuurLader factuurLader = new FactuurLaderImpl(klantLader, persoonLader, mongoLader);
-
-		return factuurLader;
+		return new FactuurLaderImpl(klantLader, persoonLader, mongoLader);
 	}
+
 	private FactuurLaderFactory() {}
 }

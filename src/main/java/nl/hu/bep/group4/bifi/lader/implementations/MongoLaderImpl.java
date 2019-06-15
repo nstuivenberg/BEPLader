@@ -24,17 +24,18 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
 public class MongoLaderImpl implements MongoLader {
-	MongoDatabase db = null;
 
 	public MongoCollection<Document> connectToMongoDB() {
-		MongoCollection<Document> BEPBifi = null;
+        MongoDatabase db = null;
+		MongoCollection<Document> bEPBifi = null;
 		String database = "BEPBifi";
 		
 		MongoClientURI uri = new MongoClientURI("mongodb+srv://dbUser:112112@cluster0-vk3z3.mongodb.net/test?retryWrites=true");
 		MongoClient mongoClient = new MongoClient(uri);
 		db = mongoClient.getDatabase(database);
-		BEPBifi = db.getCollection("BEPBifi");
-		return BEPBifi;
+		bEPBifi = db.getCollection("BEPBifi");
+
+		return bEPBifi;
 	}
 
 	/**
@@ -63,10 +64,10 @@ public class MongoLaderImpl implements MongoLader {
 				factuur.setOpmerking(factuurVanMongo.getString("note"));
 				factuur.setContactPersoon(new Persoon(factuurVanMongo.getInteger("personId")));
 				factuur.setKlant(new Klant(factuurVanMongo.getInteger("customerId")));
-				
-				
+
+
 				List<FactuurRegel> factuurRegels = new ArrayList<>();
-				
+
 				List<Document> linesOfFactuur = factuurVanMongo.getList("invoiceLines", Document.class);
 				for(Document line : linesOfFactuur) {
 					FactuurRegel factuurRegel = new FactuurRegel();
@@ -75,20 +76,20 @@ public class MongoLaderImpl implements MongoLader {
 					factuurRegel.setProductNaam(line.getString("productName"));
 					Object prijsObj = line.get("totalPrice");
 					if(prijsObj instanceof Double) {
-						factuurRegel.setTotaalprijsExBTW((Double)prijsObj);	
+						factuurRegel.setTotaalprijsExBTW((Double)prijsObj);
 					} else if(prijsObj instanceof Integer) {
 						factuurRegel.setTotaalprijsExBTW(((Integer)prijsObj).doubleValue());
 					} else {
-						throw new GarbageDataException("TotalPrice heeft als type "+prijsObj.getClass().getName());
+						throw new GarbageDataException("TotalPrice heeft als type " + prijsObj.getClass().getName());
 					}
-					
+
 					String unit = line.getString("unit").toLowerCase();
 					if(unit.contentEquals("kg")) {
 						factuurRegel.setUnit(Unit.KILOGRAM);
 					} else {
 						throw new GarbageDataException(unit + " is geen bestaande unit");
 					}
-					
+
 					String btwCode = line.getString("btwCode").toLowerCase();
 					switch (btwCode) {
 						case "hoog":
@@ -106,7 +107,7 @@ public class MongoLaderImpl implements MongoLader {
 						default:
 							throw new GarbageDataException("Onbekende btwCode " + btwCode);
 					}
-					factuurRegels.add(factuurRegel);	
+					factuurRegels.add(factuurRegel);
 				}
 				factuur.setFactuurregels(factuurRegels);
 				facturen.add(factuur);
