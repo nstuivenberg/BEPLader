@@ -32,7 +32,7 @@ public class MysqlLaderImpl implements MysqlLader {
     private String url;
 
 
-    private Connection connectToMySQLDatabase() throws ClassNotFoundException, SQLException, FileNotFoundException, IOException {
+    private Connection connectToMySQLDatabase() throws ClassNotFoundException, SQLException, IOException {
         Class.forName("com.mysql.cj.jdbc.Driver");
         setConfigVariables();
         con = DriverManager.getConnection(url, username, password);
@@ -56,7 +56,7 @@ public class MysqlLaderImpl implements MysqlLader {
     }
 
     @Override
-    public List<Adres> getAdressen(int klantId) throws SQLException, ClassNotFoundException, FileNotFoundException, IOException {
+    public List<Adres> getAdressen(int klantId) throws SQLException, ClassNotFoundException, IOException {
         connectToMySQLDatabase();
         Statement stmt;
         ResultSet resultSet;
@@ -82,7 +82,7 @@ public class MysqlLaderImpl implements MysqlLader {
     }
 
     @Override
-    public Klant getKlant(int klantId) throws SQLException, ClassNotFoundException, FileNotFoundException, IOException {
+    public Klant getKlant(int klantId) throws SQLException, ClassNotFoundException, IOException {
         connectToMySQLDatabase();
         Statement stmt;
         ResultSet resultSet = null;
@@ -110,7 +110,7 @@ public class MysqlLaderImpl implements MysqlLader {
     }
 
     @Override
-    public List<Persoon> getPersonen(int klantId) throws SQLException, ClassNotFoundException, FileNotFoundException, IOException {
+    public List<Persoon> getPersonen(int klantId) throws SQLException, ClassNotFoundException, IOException {
         connectToMySQLDatabase();
         Statement stmt;
         ResultSet resultSet = null;
@@ -143,7 +143,7 @@ public class MysqlLaderImpl implements MysqlLader {
     }
 
     @Override
-    public Adres getFactuurAdres(int klantId) throws SQLException, ClassNotFoundException, GarbageDataException, FileNotFoundException, IOException {
+    public Adres getFactuurAdres(int klantId) throws SQLException, ClassNotFoundException, GarbageDataException, IOException {
         connectToMySQLDatabase();
         Statement stmt;
         ResultSet resultSet = null;
@@ -173,7 +173,7 @@ public class MysqlLaderImpl implements MysqlLader {
     }
 
     @Override
-    public Persoon getPersoon(int persoonId) throws SQLException, ClassNotFoundException, GarbageDataException, FileNotFoundException, IOException {
+    public Persoon getPersoon(int persoonId) throws SQLException, ClassNotFoundException, GarbageDataException, IOException {
         connectToMySQLDatabase();
         Statement stmt;
         ResultSet resultSet = null;

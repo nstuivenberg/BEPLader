@@ -5,7 +5,6 @@ import nl.hu.bep.group4.bifi.lader.AdresLader;
 import nl.hu.bep.group4.bifi.lader.LegacyJarLader;
 import nl.hu.bep.group4.bifi.lader.MysqlLader;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.io.IOException;
 import java.sql.SQLException;

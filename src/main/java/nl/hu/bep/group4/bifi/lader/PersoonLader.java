@@ -9,6 +9,6 @@ import nl.hu.bep.group4.bifi.exceptions.GarbageDataException;
 import nl.hu.bep.group4.bifi.model.Persoon;
 
 public interface PersoonLader {
-	List<Persoon> getPersonen(int klantId) throws SQLException, ClassNotFoundException, GarbageDataException, FileNotFoundException, IOException;
-	Persoon getPersoon(int persoonId) throws SQLException, ClassNotFoundException, GarbageDataException, FileNotFoundException, IOException;
+	List<Persoon> getPersonen(int klantId) throws SQLException, ClassNotFoundException, GarbageDataException, IOException;
+	Persoon getPersoon(int persoonId) throws SQLException, ClassNotFoundException, GarbageDataException, IOException;
 }
