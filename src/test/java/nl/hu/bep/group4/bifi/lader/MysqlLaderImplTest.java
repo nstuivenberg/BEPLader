@@ -31,7 +31,7 @@ public class MysqlLaderImplTest {
 		assertEquals("59", a.getHuisnummer());
 		assertEquals("3511JN", a.getPostcode());
 		assertEquals("Utrecht", a.getPlaats());
-		assertEquals("DABAIE2D", a.getBiC());
+		assertEquals("DABAIE2D", a.getBic());
     }
     
     @Test
@@ -91,7 +91,7 @@ public class MysqlLaderImplTest {
 		assertEquals("59", fA.getHuisnummer());
 		assertEquals("3511JN", fA.getPostcode());
 		assertEquals("Utrecht", fA.getPlaats());
-		assertEquals("DABAIE2D", fA.getBiC());
+		assertEquals("DABAIE2D", fA.getBic());
     }
 
     @Test
