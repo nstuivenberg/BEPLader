@@ -1,5 +1,6 @@
 package nl.hu.bep.group4.bifi.lader.implementations;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -16,12 +17,12 @@ public class PersoonLaderImpl implements PersoonLader {
     }
 
 	@Override
-	public List<Persoon> getPersonen(int klantId) throws SQLException, ClassNotFoundException, GarbageDataException {
+	public List<Persoon> getPersonen(int klantId) throws SQLException, ClassNotFoundException, GarbageDataException, IOException {
         return mysqlLader.getPersonen(klantId);
 	}
 
 	@Override
-	public Persoon getPersoon(int persoonId) throws SQLException, ClassNotFoundException, GarbageDataException {
+	public Persoon getPersoon(int persoonId) throws SQLException, ClassNotFoundException, GarbageDataException, IOException {
 		return mysqlLader.getPersoon(persoonId);
 	}
 

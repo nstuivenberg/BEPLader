@@ -15,29 +15,18 @@ public class MongoLaderImplTest {
 	@Test
 	public void testConnection() {
 		MongoLaderImpl mongoLader = setup();
-		System.out.println(mongoLader.connectToMongoDB());
+		mongoLader.connectToMongoDB();
 	}
 	
 	@Test
 	public void getFacturenVoorMaandTest() throws GarbageDataException {
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		MongoLaderImpl mongoLader = setup();
 		mongoLader.getFacturenVoorMaand(4);
+	}
+
+	@Test
+	public void setFactuurSettingsTest() throws GarbageDataException {
+		MongoLaderImpl mongoLader = setup();
 	}
 	
 	
