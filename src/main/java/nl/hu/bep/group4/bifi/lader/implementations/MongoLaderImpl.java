@@ -62,7 +62,6 @@ public class MongoLaderImpl implements MongoLader {
 				factuur.setContactPersoon(new Persoon(factuurVanMongo.getInteger("personId")));
 				factuur.setKlant(new Klant(factuurVanMongo.getInteger("customerId")));
 				
-				
 				List<FactuurRegel> factuurRegels = new ArrayList<>();
 				
 				List<Document> linesOfFactuur = factuurVanMongo.getList("invoiceLines", Document.class);
@@ -115,6 +114,5 @@ public class MongoLaderImpl implements MongoLader {
 		}
 		System.out.println("End of getFacturenVoorMaand()");
 		return facturen;	
-	}
-	
+	}	
 }
