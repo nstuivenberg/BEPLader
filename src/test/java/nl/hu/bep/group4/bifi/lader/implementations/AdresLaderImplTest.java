@@ -29,7 +29,7 @@ public class AdresLaderImplTest {
 				Adres adres;
 				switch(sleutel) {
 					case "MOATA":
-						adres = new Adres("Ajax", "5", "1901CD", "Rotterdam", "testBIC1");
+						adres = new Adres("Ajax","5","1901CD","Rotterdam","testBIC1");
 						break;
 					default:
 						return null;
@@ -55,7 +55,7 @@ public class AdresLaderImplTest {
 						break;
 						/*
 					case 4:
-						adressen.add(new Adres(null,null,null,null,null));
+						adressen.add(new Adres(null,null,null,null,null,null));
 						break;
 					case 5:
 						adressen.add(null);
@@ -92,7 +92,7 @@ public class AdresLaderImplTest {
 						break;
 						/*
 					case 4:
-						adres = new Adres(null,null,null,null,null);
+						adres = new Adres(null,null,null,null,null,null);
 						break;
 						*/
 					default:

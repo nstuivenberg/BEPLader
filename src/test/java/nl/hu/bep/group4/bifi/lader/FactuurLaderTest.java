@@ -47,7 +47,7 @@ public class FactuurLaderTest {
 				}
 			}
 		};
-		final Persoon testContactPersoon1 = new Persoon(5, "Jan", "Smit", "", "030-555555", "", Persoon.Geslacht.MAN);
+		final Persoon testContactPersoon1 = new Persoon(5, "Jan", "", "Smit", "030-555555", "", Persoon.Geslacht.MAN);
 		var persoonLader = new PersoonLader() {
 			public boolean aangeroepen = false;
 			@Override

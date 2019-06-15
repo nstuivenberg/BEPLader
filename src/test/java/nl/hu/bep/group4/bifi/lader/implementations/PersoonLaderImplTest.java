@@ -21,7 +21,7 @@ public class PersoonLaderImplTest {
 	public void testGetPersonen() throws ClassNotFoundException, SQLException, GarbageDataException, IOException {
 		final int testKlantId = 5;
 		final List<Persoon> personen = new ArrayList<>();
-		personen.add(new Persoon(3, "Jan", "Jansen", "van", "030-555555","fax",Persoon.Geslacht.MAN));
+		personen.add(new Persoon(3, "Jan", "van", "Jansen", "030-555555","fax",Persoon.Geslacht.MAN));
 		PersoonLader persoonLader = setup(testKlantId, personen, null);
 		
 		assertEquals(personen, persoonLader.getPersonen(testKlantId));
@@ -29,7 +29,7 @@ public class PersoonLaderImplTest {
 	
 	@Test
 	public void testGetPersoon() throws ClassNotFoundException, SQLException, GarbageDataException, IOException {
-		final Persoon testPersoon = new Persoon(3, "Jan", "Jansen", "van", "030-555555","fax",Persoon.Geslacht.MAN);
+		final Persoon testPersoon = new Persoon(3, "Jan", "van", "Jansen", "030-555555","fax",Persoon.Geslacht.MAN);
 		PersoonLader persoonLader = setup(0, null, testPersoon);
 		
 		assertEquals(testPersoon, persoonLader.getPersoon(testPersoon.getId()));

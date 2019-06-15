@@ -69,13 +69,11 @@ public class MysqlLaderImpl implements MysqlLader {
             String postcode = resultSet.getString("postcode");
             String plaats = resultSet.getString("plaats");
             String biC = resultSet.getString("BIC");
-
             Adres adres = new Adres(straat, huisnummer, postcode, plaats, biC);
             adressen.add(adres);
         }
         con.close();
         return adressen;
-
     }
 
     @Override
@@ -132,7 +130,7 @@ public class MysqlLaderImpl implements MysqlLader {
                 convertedSex = Persoon.Geslacht.MAN;
             }
 
-            Persoon persoon = new Persoon(persoonId, voornaam, achternaam, tussenvoegsel, telefoon, fax, convertedSex);
+            Persoon persoon = new Persoon(persoonId, voornaam, tussenvoegsel, achternaam, telefoon, fax, convertedSex);
             personen.add(persoon);
         }
         con.close();
@@ -162,7 +160,6 @@ public class MysqlLaderImpl implements MysqlLader {
             String postcode = resultSet.getString("postcode");
             String plaats = resultSet.getString("plaats");
             String biC = resultSet.getString("BIC");
-
             factuurAdres = new Adres(straat, huisnummer, postcode, plaats, biC);
         }
         con.close();
@@ -196,7 +193,7 @@ public class MysqlLaderImpl implements MysqlLader {
             if (("0").equals(geslacht) || ("m").equalsIgnoreCase(geslacht)) {
                 convertedSex = Persoon.Geslacht.MAN;
             }
-            persoon = new Persoon(persoonsId, voornaam, achternaam, tussenvoegsel, telefoon, fax, convertedSex);
+            persoon = new Persoon(persoonsId, voornaam, tussenvoegsel, achternaam, telefoon, fax, convertedSex);
         }
         return persoon;
     }
