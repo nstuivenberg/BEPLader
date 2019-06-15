@@ -33,8 +33,7 @@ public class MysqlLaderImpl implements MysqlLader {
 
     private Connection connectToMySQLDatabase() throws ClassNotFoundException, SQLException {
         Class.forName("com.mysql.cj.jdbc.Driver");
-
-
+        setConfigVariables();
         con = DriverManager.getConnection(url, username, password);
         return con;
     }
