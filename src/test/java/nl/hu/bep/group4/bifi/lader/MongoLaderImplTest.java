@@ -19,13 +19,7 @@ public class MongoLaderImplTest {
 	}
 	
 	@Test
-	public void testConnection() {
-		MongoLaderImpl mongoLader = setup();
-		assertNotNull(mongoLader.connectToMongoDB());
-	}
-	
-	@Test
-	public void getFacturenVoorMaandTest() throws GarbageDataException {
+	public void testConnection() throws GarbageDataException {
 		MongoLaderImpl mongoLader = setup();
 		List<Factuur> facturen = mongoLader.getFacturenVoorMaand(4);
 		assertNotNull(facturen);
