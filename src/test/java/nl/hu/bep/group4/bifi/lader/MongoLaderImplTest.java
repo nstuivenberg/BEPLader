@@ -19,7 +19,7 @@ public class MongoLaderImplTest {
 	}
 	
 	@Test
-	public void testConnection() throws GarbageDataException {
+	public void testGetFacturenVoorMaand() throws GarbageDataException {
 		MongoLaderImpl mongoLader = setup();
 		List<Factuur> facturen = mongoLader.getFacturenVoorMaand(4);
 		assertNotNull(facturen);
