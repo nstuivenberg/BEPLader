@@ -25,7 +25,7 @@ public class MongoLaderImplTest {
 	}*/
 	
 	@Test
-	public void getFacturenVoorMaandTest() throws GarbageDataException {
+	public void getFacturenVoorMaandTest() {
 		/*MongoLaderImpl mongoLader = setup();
 		List<Factuur> facturen = mongoLader.getFacturenVoorMaand(4);
 		assertNotNull(facturen);
@@ -33,5 +33,9 @@ public class MongoLaderImplTest {
 		System.out.println("Doing stuff!");
 	}
 	
+	@Test
+	public void anotherTest() {
+		System.out.println("Doing other stuff!");
+	}
 	
 }
