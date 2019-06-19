@@ -18,11 +18,11 @@ public class MongoLaderImplTest {
 		return new MongoLaderImpl();
 	}
 	
-	@Test
+	/*@Test
 	public void testConnection() {
 		MongoLaderImpl mongoLader = setup();
 		assertNotNull(mongoLader.connectToMongoDB());
-	}
+	}*/
 	
 	@Test
 	public void getFacturenVoorMaandTest() throws GarbageDataException {
