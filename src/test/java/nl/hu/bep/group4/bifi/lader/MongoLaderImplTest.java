@@ -18,24 +18,19 @@ public class MongoLaderImplTest {
 		return new MongoLaderImpl();
 	}
 	
-	/*@Test
+	@Test
 	public void testConnection() {
 		MongoLaderImpl mongoLader = setup();
 		assertNotNull(mongoLader.connectToMongoDB());
-	}*/
+	}
 	
 	@Test
-	public void getFacturenVoorMaandTest() {
-		/*MongoLaderImpl mongoLader = setup();
+	public void getFacturenVoorMaandTest() throws GarbageDataException {
+		MongoLaderImpl mongoLader = setup();
 		List<Factuur> facturen = mongoLader.getFacturenVoorMaand(4);
 		assertNotNull(facturen);
-		assertEquals(5, facturen.size());*/
-		System.out.println("Doing stuff!");
+		assertEquals(5, facturen.size());
 	}
 	
-	@Test
-	public void anotherTest() {
-		System.out.println("Doing other stuff!");
-	}
 	
 }
