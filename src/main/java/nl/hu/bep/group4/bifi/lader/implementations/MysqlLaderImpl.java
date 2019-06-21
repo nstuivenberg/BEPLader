@@ -72,15 +72,11 @@ public class MysqlLaderImpl implements MysqlLader {
             }
         }
         catch (SQLException e) {
-        	rs.close();
-        	stmt.close();
-            con.close();
+        	closeEverything();
         	throw e;
         }
         finally {
-        	rs.close();
-        	stmt.close();
-            con.close();
+        	closeEverything();
         }
         return adressen;
     }
@@ -108,15 +104,11 @@ public class MysqlLaderImpl implements MysqlLader {
             }
         }
         catch (SQLException e) {
-        	rs.close();
-        	stmt.close();
-            con.close();
+        	closeEverything();
         	throw e;
         }
         finally {
-        	rs.close();
-        	stmt.close();
-            con.close();
+        	closeEverything();
         }
         return klant;
     }
@@ -135,15 +127,11 @@ public class MysqlLaderImpl implements MysqlLader {
             }
         }
         catch (SQLException e) {
-        	rs.close();
-        	stmt.close();
-            con.close();
+        	closeEverything();
         	throw e;
         }
         finally {
-        	rs.close();
-        	stmt.close();
-            con.close();
+        	closeEverything();
         }
         return personen;
     }
@@ -171,18 +159,20 @@ public class MysqlLaderImpl implements MysqlLader {
             }
         }
         catch (SQLException e) {
-        	rs.close();
-        	stmt.close();
-            con.close();
+        	closeEverything();
         	throw e;
         }
         finally {
-        	rs.close();
-        	stmt.close();
-            con.close();
+        	closeEverything();
         }
         return factuurAdres;
     }
+
+	private void closeEverything() throws SQLException {
+		rs.close();
+		stmt.close();
+		con.close();
+	}
 
     @Override
     public Persoon getPersoon(int persoonId) throws SQLException, ClassNotFoundException, GarbageDataException, IOException {
@@ -198,15 +188,11 @@ public class MysqlLaderImpl implements MysqlLader {
             }
         }
         catch (SQLException e) {
-        	rs.close();
-        	stmt.close();
-            con.close();
+        	closeEverything();
         	throw e;
         }
         finally {
-        	rs.close();
-        	stmt.close();
-            con.close();
+        	closeEverything();
         }
         return persoon;
     }
