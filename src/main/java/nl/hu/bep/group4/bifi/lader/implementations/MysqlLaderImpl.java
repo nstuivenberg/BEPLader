@@ -193,10 +193,6 @@ public class MysqlLaderImpl implements MysqlLader {
             String query = "select * from Persoon where PersoonID = " + persoonId;
             rs = stmt.executeQuery(query);
             
-            if (rs.getFetchSize() > 1) {
-                throw new GarbageDataException("Meer dan 1 Persoon voor PersoonId" + persoonId);
-            }
-            
             while (rs.next()) {
                 persoon = convertRowToPersoon(rs);
             }
