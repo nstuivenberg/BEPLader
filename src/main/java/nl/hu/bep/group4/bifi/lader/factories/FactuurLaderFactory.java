@@ -11,6 +11,7 @@ import nl.hu.bep.group4.bifi.lader.implementations.AdresLaderImpl;
 import nl.hu.bep.group4.bifi.lader.implementations.FactuurLaderImpl;
 import nl.hu.bep.group4.bifi.lader.implementations.KlantLaderImpl;
 import nl.hu.bep.group4.bifi.lader.implementations.LegacyJarLaderImpl;
+import nl.hu.bep.group4.bifi.lader.implementations.LegacyJarWrapper;
 import nl.hu.bep.group4.bifi.lader.implementations.MongoLaderImpl;
 import nl.hu.bep.group4.bifi.lader.implementations.MysqlLaderImpl;
 import nl.hu.bep.group4.bifi.lader.implementations.PersoonLaderImpl;
@@ -23,7 +24,7 @@ public class FactuurLaderFactory {
 		MysqlLader mysqlLader = new MysqlLaderImpl();
 		MongoLader mongoLader = new MongoLaderImpl();
 		PersoonLader persoonLader = new PersoonLaderImpl(mysqlLader);
-		LegacyJarLader legacyJarLader = new LegacyJarLaderImpl();
+		LegacyJarLader legacyJarLader = new LegacyJarLaderImpl(new LegacyJarWrapper());
 		AdresLader adresLader = new AdresLaderImpl(legacyJarLader, mysqlLader);
 
 		KlantLader klantLader = new KlantLaderImpl(adresLader, persoonLader, mysqlLader);
