@@ -72,6 +72,9 @@ public class MysqlLaderImpl implements MysqlLader {
             }
         }
         catch (SQLException e) {
+        	rs.close();
+        	stmt.close();
+            con.close();
         	throw e;
         }
         finally {
@@ -105,6 +108,9 @@ public class MysqlLaderImpl implements MysqlLader {
             }
         }
         catch (SQLException e) {
+        	rs.close();
+        	stmt.close();
+            con.close();
         	throw e;
         }
         finally {
@@ -143,6 +149,9 @@ public class MysqlLaderImpl implements MysqlLader {
             }
         }
         catch (SQLException e) {
+        	rs.close();
+        	stmt.close();
+            con.close();
         	throw e;
         }
         finally {
@@ -176,6 +185,9 @@ public class MysqlLaderImpl implements MysqlLader {
             }
         }
         catch (SQLException e) {
+        	rs.close();
+        	stmt.close();
+            con.close();
         	throw e;
         }
         finally {
@@ -217,6 +229,9 @@ public class MysqlLaderImpl implements MysqlLader {
             }
         }
         catch (SQLException e) {
+        	rs.close();
+        	stmt.close();
+            con.close();
         	throw e;
         }
         finally {
