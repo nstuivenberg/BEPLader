@@ -7,19 +7,21 @@ import ADDRLOOKUPER.AddressLookerUPAlreadyCloosed;
 import ADDRLOOKUPER.AddressLookerUPAlreadyLookinUP;
 import ADDRLOOKUPER.AddressLookerUPAlreadyReadyToLookUP;
 import ADDRLOOKUPER.AddressLookerUpInWrongStateException;
-import ADDRLOOKUPER.LOOKUP_AdDDR;
 import nl.hu.bep.group4.bifi.lader.LegacyJarLader;
 import nl.hu.bep.group4.bifi.model.Adres;
 
 public class LegacyJarLaderImpl implements LegacyJarLader {
+	private LegacyJarWrapper wrapper;
+	
+	public LegacyJarLaderImpl(LegacyJarWrapper wrapper) {
+		this.wrapper = wrapper;
+	}
 
 	@Override
 	public Adres laadAdres(String sleutel) throws IOException {
 		Map<String, String> adresDataMap = null;
 		try {
-			LOOKUP_AdDDR.scanStart();
-			adresDataMap = LOOKUP_AdDDR.scanForward(sleutel);
-	    	LOOKUP_AdDDR.scanStop();
+			adresDataMap = wrapper.laadAdres(sleutel);
 		} catch (AddressLookerUPAlreadyLookinUP | AddressLookerUPAlreadyReadyToLookUP | AddressLookerUpInWrongStateException | AddressLookerUPAlreadyCloosed e) {
 			throw new IOException("adres lookup mislukt", e);
 		}
