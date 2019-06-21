@@ -131,21 +131,7 @@ public class MysqlLaderImpl implements MysqlLader {
             rs = stmt.executeQuery(query);
             
             while (rs.next()) {
-                int persoonsId = rs.getInt("PersoonID");
-                String voornaam = rs.getString("Voornaam");
-                String tussenvoegsel = rs.getString("Tussenvoegsel");
-                String achternaam = rs.getString("Achternaam");
-                String telefoon = rs.getString("Telefoon");
-                String fax = rs.getString("Fax");
-                String geslacht = rs.getString("Geslacht");
-                Persoon.Geslacht convertedSex = Persoon.Geslacht.VROUW;
-
-                if (("0").equals(geslacht) || ("m").equalsIgnoreCase(geslacht)) {
-                    convertedSex = Persoon.Geslacht.MAN;
-                }
-
-                Persoon persoon = new Persoon(persoonsId, voornaam, tussenvoegsel, achternaam, telefoon, fax, convertedSex);
-                personen.add(persoon);
+                personen.add(convertRowToPersoon(rs));
             }
         }
         catch (SQLException e) {
@@ -212,20 +198,7 @@ public class MysqlLaderImpl implements MysqlLader {
             }
             
             while (rs.next()) {
-                int persoonsId = rs.getInt("PersoonID");
-                String voornaam = rs.getString("Voornaam");
-                String tussenvoegsel = rs.getString("Tussenvoegsel");
-                String achternaam = rs.getString("Achternaam");
-                String telefoon = rs.getString("Telefoon");
-                String fax = rs.getString("Fax");
-                String geslacht = rs.getString("Geslacht");
-                Persoon.Geslacht convertedSex = Persoon.Geslacht.VROUW;
-
-                if (("0").equals(geslacht) || ("m").equalsIgnoreCase(geslacht)) {
-                    convertedSex = Persoon.Geslacht.MAN;
-                }
-                
-                persoon = new Persoon(persoonsId, voornaam, tussenvoegsel, achternaam, telefoon, fax, convertedSex);
+                persoon = convertRowToPersoon(rs);
             }
         }
         catch (SQLException e) {
@@ -241,4 +214,23 @@ public class MysqlLaderImpl implements MysqlLader {
         }
         return persoon;
     }
+
+	private Persoon convertRowToPersoon(ResultSet rs) throws SQLException {
+		Persoon persoon;
+		int persoonsId = rs.getInt("PersoonID");
+		String voornaam = rs.getString("Voornaam");
+		String tussenvoegsel = rs.getString("Tussenvoegsel");
+		String achternaam = rs.getString("Achternaam");
+		String telefoon = rs.getString("Telefoon");
+		String fax = rs.getString("Fax");
+		String geslacht = rs.getString("Geslacht");
+		Persoon.Geslacht convertedSex = Persoon.Geslacht.VROUW;
+
+		if (("0").equals(geslacht) || ("m").equalsIgnoreCase(geslacht)) {
+		    convertedSex = Persoon.Geslacht.MAN;
+		}
+		
+		persoon = new Persoon(persoonsId, voornaam, tussenvoegsel, achternaam, telefoon, fax, convertedSex);
+		return persoon;
+	}
 }
